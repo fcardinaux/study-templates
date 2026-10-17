@@ -85,8 +85,8 @@ function threeBoards(W, H, sides) {
     const boardX = side === 'left' ? R.margin : W - R.margin - R.boardSize;
     const rulesX = side === 'left' ? R.margin + R.boardSize + R.gutter : R.margin;
     boardRow(nodes, R, boardX, y, rulesX, rulesWidth, bottom);
-    // The original carries a separator after the first block only.
-    if (i === 0) {
+    // A separator sits between consecutive sections, so every row but the last.
+    if (i < sides.length - 1) {
       const sepY = y + R.boardSize + R.leadAfterBoard - s;
       if (sepY < bottom) nodes.push(dottedRule(R.margin, sepY, content, 2 * s));
     }

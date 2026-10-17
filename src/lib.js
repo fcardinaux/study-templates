@@ -134,6 +134,20 @@ const clipped = (x, y, width, avoid) =>
 export const inside = (avoid, x, y) =>
   !!avoid && x >= avoid.x && x <= avoid.right && y >= avoid.y && y <= avoid.bottom;
 
+// A run of text. `vcenter` puts the middle of the text on y instead of its
+// baseline, which is what you want inside a table row.
+export function text(str, x, y, {
+  size = 11, fill = COLOR.label, anchor = 'start', weight = 'normal',
+  vcenter = false,
+} = {}) {
+  const attrs = {
+    x, y, fill, 'font-size': size, 'font-weight': weight,
+    'font-family': 'Helvetica, Arial, sans-serif', 'text-anchor': anchor,
+  };
+  if (vcenter) attrs['dominant-baseline'] = 'central';
+  return el('text', attrs, [document.createTextNode(str)]);
+}
+
 // A block of ruled writing lines, top-aligned at y.
 export function rules(x, y, width, count, gap, avoid) {
   const g = el('g', {});

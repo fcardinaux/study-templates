@@ -22,6 +22,7 @@ TEMPLATES=(
   chess-3-boards-left
   chess-cornell-crosshairs
   chess-cornell-dots
+  chess-scoresheet
 )
 
 # Page sizes at 96 dpi, as "<suffix>:<width>x<height>".

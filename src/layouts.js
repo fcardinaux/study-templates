@@ -5,7 +5,7 @@
 // ruled lines as the height allows, so a page with a different aspect ratio
 // keeps the same proportions instead of being letterboxed.
 
-import { board, rules, dottedRule, line, lattice, dotGrid, crosshairGrid,
+import { board, rules, dottedRule, line, text, lattice, dotGrid, crosshairGrid,
          qrCode, boxForSquare, gutterForSquare, COLOR } from './lib.js';
 
 export const A4 = { width: 795, height: 1124 };
@@ -29,10 +29,27 @@ const REF = {
   summaryRule: 824,
   qrSize: 60,           // ~16mm on A4, which keeps a 33-module code scannable
   qrGap: 14,            // clearance between the last content and the code
+
+  // Scoresheet
+  sheetBoard: 200,      // diagram for the position worth keeping
+  fieldTop: 36,         // first header field, relative to the top margin
+  fieldPitch: 44,       // header field to header field
+  fieldLabel: 54,       // room for a field's label before its rule starts
+  fieldRows: 4,         // count: White, Black, Event, Date
+  headerGap: 34,        // header block to the move table
+  colGap: 22,           // between the two halves of the move table
+  numberWidth: 34,      // the move-number column inside a half
+  textSize: 11,
+  numberSize: 10,
+  textGap: 6,           // a label's baseline above the rule it sits on
 };
 
+// Entries that count something rather than measure it, so they must not scale
+// with the page. (`gridRows` is knowingly not in here — see the Cornell note.)
+const COUNTS = new Set(['rulesPerBlock', 'fieldRows']);
+
 const scaled = (s) => Object.fromEntries(
-  Object.entries(REF).map(([k, v]) => [k, k === 'rulesPerBlock' ? v : v * s]),
+  Object.entries(REF).map(([k, v]) => [k, COUNTS.has(k) ? v : v * s]),
 );
 
 // Content runs to the bottom margin like any other edge of the page. The QR is
@@ -195,6 +212,71 @@ function cornell(W, H, grid, view) {
   return nodes;
 }
 
+// A scoresheet: who played, a diagram of the position worth keeping, and two
+// columns of numbered moves. The one template here that records a game rather
+// than annotating a position, and the one most likely to be printed.
+//
+// The move rows share the ruled-line pitch of the other layouts, so a page holds
+// as many moves as the page height allows: 50 on A4, fewer on a shorter page.
+function scoresheet(W, H, view) {
+  const s = W / A4.width, R = scaled(s);
+  const content = W - 2 * R.margin;
+  const bottom = H - R.margin;
+  const avoid = qrBox(W, H, R);
+  const nodes = [];
+
+  const small = { size: R.numberSize, fill: COLOR.gridline };
+
+  // Header: the players and the occasion on the left, the diagram on the right.
+  const boardX = W - R.margin - R.sheetBoard;
+  nodes.push(board(boardX, R.top, R.sheetBoard, view));
+
+  const fieldEnd = boardX - R.colGap;
+  ['White', 'Black', 'Event', 'Date'].forEach((name, i) => {
+    const y = R.top + R.fieldTop + i * R.fieldPitch;
+    nodes.push(text(name, R.margin, y - R.textGap, { size: R.textSize }));
+    nodes.push(line(R.margin + R.fieldLabel, y,
+                    fieldEnd - R.margin - R.fieldLabel, 1, COLOR.rule));
+  });
+
+  // The move table: two halves, each a move number and a cell per player. The
+  // numbers run down the first half and continue down the second.
+  const tableTop = R.top + R.sheetBoard + R.headerGap;
+  const rows = Math.floor((avoid.y - tableTop) / R.ruleGap);
+  const half = (content - R.colGap) / 2;
+  const cell = (half - R.numberWidth) / 2;
+
+  [R.margin, R.margin + half + R.colGap].forEach((x0, c) => {
+    nodes.push(text('White', x0 + R.numberWidth + cell / 2, tableTop - R.textGap,
+                    { ...small, anchor: 'middle' }));
+    nodes.push(text('Black', x0 + R.numberWidth + cell * 1.5, tableTop - R.textGap,
+                    { ...small, anchor: 'middle' }));
+
+    for (let i = 0; i <= rows; i++) {
+      nodes.push(line(x0, tableTop + i * R.ruleGap, half, 1, COLOR.rule));
+    }
+    for (const dx of [0, R.numberWidth, R.numberWidth + cell, half]) {
+      nodes.push(line(x0 + dx, tableTop, 1, rows * R.ruleGap, COLOR.separator));
+    }
+    for (let i = 0; i < rows; i++) {
+      nodes.push(text(String(c * rows + i + 1),
+                      x0 + R.numberWidth - R.textGap,
+                      tableTop + (i + 0.5) * R.ruleGap,
+                      { ...small, anchor: 'end', vcenter: true }));
+    }
+  });
+
+  // The result belongs at the end of a game, so it sits at the foot of the page,
+  // in the band beside the code rather than in the header.
+  const resultY = (avoid.y + bottom) / 2;
+  nodes.push(text('Result', R.margin, resultY - R.textGap, { size: R.textSize }));
+  nodes.push(rules(R.margin + R.fieldLabel, resultY, content - R.fieldLabel,
+                   1, R.ruleGap, avoid));
+
+  stampQr(nodes, W, H, R);
+  return nodes;
+}
+
 const dots = (points, pitch) => dotGrid(points, pitch * 0.045);
 const crosshairs = (points, pitch) => crosshairGrid(points, pitch * 0.40, pitch * 0.030);
 
@@ -204,6 +286,7 @@ export const LAYOUTS = {
   'chess-3-boards-alternate': (W, H, v) => threeBoards(W, H, ['left', 'right', 'left'], v),
   'chess-cornell-dots': (W, H, v) => cornell(W, H, dots, v),
   'chess-cornell-crosshairs': (W, H, v) => cornell(W, H, crosshairs, v),
+  'chess-scoresheet': scoresheet,
 };
 
 // Human-readable names, used for the PDF title. A note app lists a file by its
@@ -215,6 +298,7 @@ export const TITLES = {
   'chess-3-boards-alternate': 'three boards, alternating',
   'chess-cornell-dots': 'Cornell layout, dot grid',
   'chess-cornell-crosshairs': 'Cornell layout, crosshair grid',
+  'chess-scoresheet': 'scoresheet',
 };
 
 // How the board is labelled. The squares are identical in all three.

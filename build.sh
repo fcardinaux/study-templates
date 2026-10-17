@@ -10,6 +10,12 @@ cd "$(dirname "$0")"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 [ -x "$CHROME" ] || { echo "Chrome not found at: $CHROME" >&2; echo "Set CHROME=/path/to/chrome" >&2; exit 1; }
 
+# Chrome stamps the moment of the run into every PDF, so an unchanged source
+# still produced a new file on every build. Both dates are rewritten to a fixed
+# value afterwards, which makes the build reproducible: a diff under pdf/ now
+# means the artwork really changed.
+PDF_DATE="${PDF_DATE:-D:20260101000000+00'00'}"
+
 TEMPLATES=(
   chess-1-board-top-left
   chess-3-boards-alternate
@@ -19,9 +25,10 @@ TEMPLATES=(
 )
 
 # Page sizes at 96 dpi, as "<suffix>:<width>x<height>".
-#   -a4    210x297mm
-#   -3x4   8.0 x 10.67in portrait, matching a 13.3in 4:3 e-ink panel
-PAGES=("-a4:795x1124" "-3x4:768x1024")
+#   -a4      210 x 297mm
+#   -3x4     8.0 x 10.67in portrait, matching a 13.3in 4:3 e-ink panel
+#   -letter  8.5 x 11in, US Letter
+PAGES=("-a4:795x1124" "-3x4:768x1024" "-letter:816x1056")
 
 # Board labelling. The squares are the same in all three.
 VIEWS=(white-view black-view no-coords)
@@ -58,6 +65,26 @@ for page in "${PAGES[@]}"; do
     done
   done
 done
+
+# The replacement is the same length as the stamp it overwrites, so every byte
+# offset in the cross-reference table stays valid without rebuilding it.
+echo "Normalising timestamps"
+python3 - "$PDF_DATE" pdf/*.pdf <<'NORM'
+import re, sys
+
+date, paths = sys.argv[1].encode(), sys.argv[2:]
+stamp = re.compile(rb"/(CreationDate|ModDate) \(D:[^)]*\)")
+
+for path in paths:
+    with open(path, 'rb') as f:
+        raw = f.read()
+    out, n = stamp.subn(lambda m: b"/%s (%s)" % (m.group(1), date), raw)
+    if n != 2 or len(out) != len(raw):
+        sys.exit(f"{path}: expected two same-length date stamps, found {n}")
+    if out != raw:
+        with open(path, 'wb') as f:
+            f.write(out)
+NORM
 
 # Previews illustrate the layouts in the README, so they use the coordinate-free
 # view: at 300px wide the labels are about 3px tall and read as speckle, not text.

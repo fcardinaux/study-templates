@@ -82,8 +82,19 @@ function oneBoardTopLeft(W, H, view) {
 }
 
 // Three boards down the page; `sides` picks which margin each one sits against.
+//
+// Scaling to the page width alone would push the last board off the foot of a
+// page that is proportionally shorter than A4 — on US Letter it left 3.5mm below
+// the bottom coordinates, inside the unprintable edge of most printers. So the
+// scale is also capped at the point where that board keeps a full bottom margin:
+// a short page gets slightly smaller boards rather than clipped ones. A board in
+// the right-hand column has to clear the QR code too; one on the left sits beside
+// it and does not.
 function threeBoards(W, H, sides, view) {
-  const s = W / A4.width, R = scaled(s);
+  const foot = REF.margin +
+    (sides[sides.length - 1] === 'right' ? REF.qrSize + REF.qrGap : 0);
+  const span = REF.top + (sides.length - 1) * REF.boardPitch + REF.boardSize + foot;
+  const s = Math.min(W / A4.width, H / span), R = scaled(s);
   const content = W - 2 * R.margin;
   const bottom = usableBottom(H, R);
   const rulesWidth = content - R.boardSize - R.gutter;

@@ -3,8 +3,8 @@
 Templates for studying chess by hand — blank boards paired with room to write, so a
 position and the notes about it live on the same page.
 
-Each one is a single-page PDF, in three board views and two page sizes. Drop one in as
-a page background and annotate it, or print it.
+Each one is a single-page PDF, in three board views and three page sizes. Drop one in
+as a page background and annotate it, or print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
@@ -21,7 +21,7 @@ labelling changes.
 | **Black view** | h8 | Studying from Black's side, so the board matches what you see |
 | **No coordinates** | — | Visualisation and blindfold work, or an uncluttered diagram |
 
-And two page sizes: **3:4** for a tablet note app, **A4** for paper.
+And three page sizes: **3:4** for a tablet note app, **A4** and **US Letter** for paper.
 
 ## Chess
 
@@ -34,7 +34,11 @@ page ruled edge to edge. The most writing space of the set — for annotating on
 position in depth: a game you are reviewing, a tactic you missed, an endgame you want
 to reason through.
 
-**Download** — white view: [3:4](pdf/chess-1-board-top-left-white-view-3x4.pdf) · [A4](pdf/chess-1-board-top-left-white-view-a4.pdf) — black view: [3:4](pdf/chess-1-board-top-left-black-view-3x4.pdf) · [A4](pdf/chess-1-board-top-left-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-1-board-top-left-no-coords-3x4.pdf) · [A4](pdf/chess-1-board-top-left-no-coords-a4.pdf)
+**Download**
+
+- **3:4** — [white view](pdf/chess-1-board-top-left-white-view-3x4.pdf) · [black view](pdf/chess-1-board-top-left-black-view-3x4.pdf) · [no coordinates](pdf/chess-1-board-top-left-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-1-board-top-left-white-view-a4.pdf) · [black view](pdf/chess-1-board-top-left-black-view-a4.pdf) · [no coordinates](pdf/chess-1-board-top-left-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-1-board-top-left-white-view-letter.pdf) · [black view](pdf/chess-1-board-top-left-black-view-letter.pdf) · [no coordinates](pdf/chess-1-board-top-left-no-coords-letter.pdf)
 
 ### Three boards, left column
 
@@ -44,7 +48,11 @@ Three boards stacked down the left margin, each with its own block of ruled line
 A steady left-to-right rhythm — diagram, then commentary — that suits three related
 positions: an opening line at three branch points, or three puzzles in a row.
 
-**Download** — white view: [3:4](pdf/chess-3-boards-left-white-view-3x4.pdf) · [A4](pdf/chess-3-boards-left-white-view-a4.pdf) — black view: [3:4](pdf/chess-3-boards-left-black-view-3x4.pdf) · [A4](pdf/chess-3-boards-left-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-3-boards-left-no-coords-3x4.pdf) · [A4](pdf/chess-3-boards-left-no-coords-a4.pdf)
+**Download**
+
+- **3:4** — [white view](pdf/chess-3-boards-left-white-view-3x4.pdf) · [black view](pdf/chess-3-boards-left-black-view-3x4.pdf) · [no coordinates](pdf/chess-3-boards-left-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-3-boards-left-white-view-a4.pdf) · [black view](pdf/chess-3-boards-left-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-left-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-3-boards-left-white-view-letter.pdf) · [black view](pdf/chess-3-boards-left-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-left-no-coords-letter.pdf)
 
 ### Three boards, alternating
 
@@ -54,7 +62,11 @@ The same three boards, alternating left–right–left down the page. The zig-za
 each position visually distinct from its neighbours, which helps when the three are
 *not* a sequence but separate items you will scan back through later.
 
-**Download** — white view: [3:4](pdf/chess-3-boards-alternate-white-view-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-white-view-a4.pdf) — black view: [3:4](pdf/chess-3-boards-alternate-black-view-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-3-boards-alternate-no-coords-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-no-coords-a4.pdf)
+**Download**
+
+- **3:4** — [white view](pdf/chess-3-boards-alternate-white-view-3x4.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-3x4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-3-boards-alternate-white-view-a4.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-3-boards-alternate-white-view-letter.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-letter.pdf)
 
 ### Cornell layout, dot grid
 
@@ -66,7 +78,11 @@ column, and a summary band ruled off at the foot of the page. One grid runs acro
 whole page, anchored on the crossing of the two rules, and the board's squares are
 exactly one grid cell — so the dots, the rules and the board all line up.
 
-**Download** — white view: [3:4](pdf/chess-cornell-dots-white-view-3x4.pdf) · [A4](pdf/chess-cornell-dots-white-view-a4.pdf) — black view: [3:4](pdf/chess-cornell-dots-black-view-3x4.pdf) · [A4](pdf/chess-cornell-dots-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-cornell-dots-no-coords-3x4.pdf) · [A4](pdf/chess-cornell-dots-no-coords-a4.pdf)
+**Download**
+
+- **3:4** — [white view](pdf/chess-cornell-dots-white-view-3x4.pdf) · [black view](pdf/chess-cornell-dots-black-view-3x4.pdf) · [no coordinates](pdf/chess-cornell-dots-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-cornell-dots-white-view-a4.pdf) · [black view](pdf/chess-cornell-dots-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-dots-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-cornell-dots-white-view-letter.pdf) · [black view](pdf/chess-cornell-dots-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-dots-no-coords-letter.pdf)
 
 ### Cornell layout, crosshair grid
 
@@ -76,7 +92,11 @@ The same Cornell layout, and the same grid, with a crosshair in place of each do
 ticks give you horizontal and vertical alignment cues rather than single points — easier
 to rule a straight line or draw a second board freehand, slightly busier on the page.
 
-**Download** — white view: [3:4](pdf/chess-cornell-crosshairs-white-view-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-white-view-a4.pdf) — black view: [3:4](pdf/chess-cornell-crosshairs-black-view-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-cornell-crosshairs-no-coords-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-no-coords-a4.pdf)
+**Download**
+
+- **3:4** — [white view](pdf/chess-cornell-crosshairs-white-view-3x4.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-3x4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-cornell-crosshairs-white-view-a4.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-cornell-crosshairs-white-view-letter.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-letter.pdf)
 
 ---
 
@@ -89,20 +109,18 @@ with no empty strip down either side.
 Everything is drawn as vector, so the boards and grids stay sharp at any zoom and at
 the 300 ppi those panels render at — nothing in these pages is a bitmap.
 
-The A4 files work too, but being narrower in proportion they will sit inside the
-screen with margins to the left and right.
+The A4 and Letter files work too, but neither matches those proportions, so each sits
+inside the screen with a strip of empty space — down the sides for A4, which is
+narrower, and above and below for Letter, which is wider.
 
 ## Printing
 
-The **A4** files are 210 × 297 mm.
+The **A4** files are 210 × 297 mm and the **US Letter** files 8.5 × 11 inches. Both are
+native page sizes, so nothing is scaled and nothing is clipped.
 
 Set the scale to **100%** in your print dialog — not "Fit to page" or "Shrink to
 printable area". Scaling stretches the page to your printer's margins and the board
 squares stop being square, which makes pieces sketched on them look lopsided.
-
-On US Letter paper, 100% scale will clip a few millimetres off one edge. The board
-itself sits well inside the margins, so nothing important is lost, but Letter-native
-versions are not available yet.
 
 ## About the Cornell layout
 
@@ -127,7 +145,7 @@ rebuild — do not edit the PDFs.
 ./build.sh
 ```
 
-That regenerates all five PDFs and refreshes the preview images. It needs Chrome
+That regenerates every PDF and refreshes the preview images. It needs Chrome
 (set `CHROME=/path/to/chrome` if yours is not in the usual place) and Python 3,
 which serves the sources locally because browsers will not load ES modules over
 `file://`.
@@ -136,10 +154,14 @@ which serves the sources locally because browsers will not load ES modules over
 | --- | --- |
 | `src/lib.js` | The board, the ruled lines, and the dot and crosshair grids |
 | `src/layouts.js` | The five page layouts, and every measurement they share |
-| `src/render.html` | Draws one template at a given page size |
+| `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
+| `src/render.html` | Draws one template at a given view and page size |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.
+
+The build is reproducible: rebuilding without changing the source produces the same
+bytes, so any difference under `pdf/` is a real change to the artwork.
 
 Everything is drawn as explicit SVG rather than CSS backgrounds. That matters: Chrome
 rasterises a CSS gradient when it prints, which is how the original dot and crosshair

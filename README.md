@@ -34,7 +34,7 @@ page ruled edge to edge. The most writing space of the set — for annotating on
 position in depth: a game you are reviewing, a tactic you missed, an endgame you want
 to reason through.
 
-**Download** — white view: [3:4](chess-1-board-top-left-white-view-3x4.pdf) · [A4](chess-1-board-top-left-white-view-a4.pdf) — black view: [3:4](chess-1-board-top-left-black-view-3x4.pdf) · [A4](chess-1-board-top-left-black-view-a4.pdf) — no coordinates: [3:4](chess-1-board-top-left-no-coords-3x4.pdf) · [A4](chess-1-board-top-left-no-coords-a4.pdf)
+**Download** — white view: [3:4](pdf/chess-1-board-top-left-white-view-3x4.pdf) · [A4](pdf/chess-1-board-top-left-white-view-a4.pdf) — black view: [3:4](pdf/chess-1-board-top-left-black-view-3x4.pdf) · [A4](pdf/chess-1-board-top-left-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-1-board-top-left-no-coords-3x4.pdf) · [A4](pdf/chess-1-board-top-left-no-coords-a4.pdf)
 
 ### Three boards, left column
 
@@ -44,7 +44,7 @@ Three boards stacked down the left margin, each with its own block of ruled line
 A steady left-to-right rhythm — diagram, then commentary — that suits three related
 positions: an opening line at three branch points, or three puzzles in a row.
 
-**Download** — white view: [3:4](chess-3-boards-left-white-view-3x4.pdf) · [A4](chess-3-boards-left-white-view-a4.pdf) — black view: [3:4](chess-3-boards-left-black-view-3x4.pdf) · [A4](chess-3-boards-left-black-view-a4.pdf) — no coordinates: [3:4](chess-3-boards-left-no-coords-3x4.pdf) · [A4](chess-3-boards-left-no-coords-a4.pdf)
+**Download** — white view: [3:4](pdf/chess-3-boards-left-white-view-3x4.pdf) · [A4](pdf/chess-3-boards-left-white-view-a4.pdf) — black view: [3:4](pdf/chess-3-boards-left-black-view-3x4.pdf) · [A4](pdf/chess-3-boards-left-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-3-boards-left-no-coords-3x4.pdf) · [A4](pdf/chess-3-boards-left-no-coords-a4.pdf)
 
 ### Three boards, alternating
 
@@ -54,7 +54,7 @@ The same three boards, alternating left–right–left down the page. The zig-za
 each position visually distinct from its neighbours, which helps when the three are
 *not* a sequence but separate items you will scan back through later.
 
-**Download** — white view: [3:4](chess-3-boards-alternate-white-view-3x4.pdf) · [A4](chess-3-boards-alternate-white-view-a4.pdf) — black view: [3:4](chess-3-boards-alternate-black-view-3x4.pdf) · [A4](chess-3-boards-alternate-black-view-a4.pdf) — no coordinates: [3:4](chess-3-boards-alternate-no-coords-3x4.pdf) · [A4](chess-3-boards-alternate-no-coords-a4.pdf)
+**Download** — white view: [3:4](pdf/chess-3-boards-alternate-white-view-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-white-view-a4.pdf) — black view: [3:4](pdf/chess-3-boards-alternate-black-view-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-3-boards-alternate-no-coords-3x4.pdf) · [A4](pdf/chess-3-boards-alternate-no-coords-a4.pdf)
 
 ### Cornell layout, dot grid
 
@@ -66,7 +66,7 @@ column, and a summary band ruled off at the foot of the page. One grid runs acro
 whole page, anchored on the crossing of the two rules, and the board's squares are
 exactly one grid cell — so the dots, the rules and the board all line up.
 
-**Download** — white view: [3:4](chess-cornell-dots-white-view-3x4.pdf) · [A4](chess-cornell-dots-white-view-a4.pdf) — black view: [3:4](chess-cornell-dots-black-view-3x4.pdf) · [A4](chess-cornell-dots-black-view-a4.pdf) — no coordinates: [3:4](chess-cornell-dots-no-coords-3x4.pdf) · [A4](chess-cornell-dots-no-coords-a4.pdf)
+**Download** — white view: [3:4](pdf/chess-cornell-dots-white-view-3x4.pdf) · [A4](pdf/chess-cornell-dots-white-view-a4.pdf) — black view: [3:4](pdf/chess-cornell-dots-black-view-3x4.pdf) · [A4](pdf/chess-cornell-dots-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-cornell-dots-no-coords-3x4.pdf) · [A4](pdf/chess-cornell-dots-no-coords-a4.pdf)
 
 ### Cornell layout, crosshair grid
 
@@ -76,7 +76,7 @@ The same Cornell layout, and the same grid, with a crosshair in place of each do
 ticks give you horizontal and vertical alignment cues rather than single points — easier
 to rule a straight line or draw a second board freehand, slightly busier on the page.
 
-**Download** — white view: [3:4](chess-cornell-crosshairs-white-view-3x4.pdf) · [A4](chess-cornell-crosshairs-white-view-a4.pdf) — black view: [3:4](chess-cornell-crosshairs-black-view-3x4.pdf) · [A4](chess-cornell-crosshairs-black-view-a4.pdf) — no coordinates: [3:4](chess-cornell-crosshairs-no-coords-3x4.pdf) · [A4](chess-cornell-crosshairs-no-coords-a4.pdf)
+**Download** — white view: [3:4](pdf/chess-cornell-crosshairs-white-view-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-white-view-a4.pdf) — black view: [3:4](pdf/chess-cornell-crosshairs-black-view-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-black-view-a4.pdf) — no coordinates: [3:4](pdf/chess-cornell-crosshairs-no-coords-3x4.pdf) · [A4](pdf/chess-cornell-crosshairs-no-coords-a4.pdf)
 
 ---
 

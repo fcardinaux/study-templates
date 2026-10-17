@@ -35,6 +35,7 @@ for _ in $(seq 40); do
   sleep 0.1
 done
 
+mkdir -p pdf
 PROFILE=$(mktemp -d)
 trap 'kill $SERVER 2>/dev/null || true; rm -rf "$PROFILE"' EXIT
 
@@ -45,7 +46,7 @@ for page in "${PAGES[@]}"; do
   h="${dims#*x}"
   for t in "${TEMPLATES[@]}"; do
     for v in "${VIEWS[@]}"; do
-      out="${t}-${v}${suffix}.pdf"
+      out="pdf/${t}-${v}${suffix}.pdf"
       "$CHROME" --headless --disable-gpu --no-sandbox \
         --user-data-dir="$PROFILE" \
         --virtual-time-budget=4000 \
@@ -53,7 +54,7 @@ for page in "${PAGES[@]}"; do
         --print-to-pdf="$out" \
         "http://127.0.0.1:$PORT/src/render.html?t=${t}&v=${v}&w=${w}&h=${h}" \
         >/dev/null 2>&1
-      printf '  %-46s %7s bytes\n' "$out" "$(wc -c < "$out" | tr -d ' ')"
+      printf '  %-50s %7s bytes\n' "$out" "$(wc -c < "$out" | tr -d ' ')"
     done
   done
 done
@@ -63,7 +64,7 @@ echo "Refreshing previews"
 mkdir -p previews
 for t in "${TEMPLATES[@]}"; do
   rm -f "previews/${t}.png"
-  qlmanage -t -s 1000 -o previews "${t}-white-view-a4.pdf" >/dev/null 2>&1
+  qlmanage -t -s 1000 -o previews "pdf/${t}-white-view-a4.pdf" >/dev/null 2>&1
   mv "previews/${t}-white-view-a4.pdf.png" "previews/${t}.png"
 done
 echo "Done."

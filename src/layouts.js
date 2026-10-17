@@ -27,7 +27,6 @@ const REF = {
   cueWidth: 218,
   cornellHeight: 756,
   summaryRule: 824,
-  summaryHeight: 195,
   qrSize: 60,           // ~16mm on A4, which keeps a 33-module code scannable
   qrGap: 14,            // clearance between the last content and the code
 };
@@ -36,9 +35,17 @@ const scaled = (s) => Object.fromEntries(
   Object.entries(REF).map(([k, v]) => [k, k === 'rulesPerBlock' ? v : v * s]),
 );
 
-// The bottom of the usable area: the margin, less the room the QR needs. Keeping
-// the reserve on every layout means no content can ever run under the code.
-const usableBottom = (H, R) => H - R.margin - R.qrSize - R.qrGap;
+// Content runs to the bottom margin like any other edge of the page. The QR is
+// the one obstacle, and it occupies a single corner, so layouts step around that
+// box rather than stopping a whole band short of it and leaving the band empty.
+// The box includes `qrGap` on the two sides content approaches from, which also
+// covers the quiet zone the code is drawn with.
+const qrBox = (W, H, R) => ({
+  x: W - R.margin - R.qrSize - R.qrGap,
+  y: H - R.margin - R.qrSize - R.qrGap,
+  right: W - R.margin,
+  bottom: H - R.margin,
+});
 
 const stampQr = (nodes, W, H, R) =>
   nodes.push(qrCode(W - R.margin - R.qrSize, H - R.margin - R.qrSize, R.qrSize));
@@ -47,11 +54,11 @@ const stampQr = (nodes, W, H, R) =>
 const fit = (top, bottom, gap, max) =>
   Math.max(0, Math.min(max, Math.floor((bottom - top) / gap) + 1));
 
-function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom, view) {
+function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom, view, avoid) {
   nodes.push(board(x, y, R.boardSize, view));
   const top = y + R.rulesOffset;
   const n = fit(top, bottom, R.ruleGap, R.rulesPerBlock);
-  if (n) nodes.push(rules(rulesX, top, rulesWidth, n, R.ruleGap));
+  if (n) nodes.push(rules(rulesX, top, rulesWidth, n, R.ruleGap, avoid));
   return n;
 }
 
@@ -59,24 +66,38 @@ function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom, view) {
 function oneBoardTopLeft(W, H, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
-  const bottom = usableBottom(H, R);
+  const bottom = H - R.margin;
+  const avoid = qrBox(W, H, R);
   const nodes = [];
   const rulesX = R.margin + R.boardSize + R.gutter;
 
-  boardRow(nodes, R, R.margin, R.top, rulesX, content - R.boardSize - R.gutter, bottom, view);
+  boardRow(nodes, R, R.margin, R.top, rulesX, content - R.boardSize - R.gutter,
+           bottom, view, avoid);
 
   let cursor = R.top + R.boardSize - s;
   let lead = R.leadAfterBoard;
+  let blocks = 0;
   while (true) {
     const sepY = cursor + lead;
     const top = sepY + R.afterSeparator;
     const n = fit(top, bottom, R.ruleGap, R.rulesPerBlock);
     if (n < 2) break;
-    nodes.push(dottedRule(R.margin, sepY, content, 2 * s));
-    nodes.push(rules(R.margin, top, content, n, R.ruleGap));
+    nodes.push(dottedRule(R.margin, sepY, content, 2 * s, avoid));
+    nodes.push(rules(R.margin, top, content, n, R.ruleGap, avoid));
     cursor = top + (n - 1) * R.ruleGap;
     lead = R.leadAfterBlock;
+    blocks++;
   }
+
+  // What is left at the foot is too short for another separated block, but it is
+  // still writing space: the last block runs on at the same pitch to the bottom
+  // margin instead of ending a block early and leaving the band blank.
+  if (blocks) {
+    for (let at = cursor + R.ruleGap; at <= bottom; at += R.ruleGap) {
+      nodes.push(rules(R.margin, at, content, 1, R.ruleGap, avoid));
+    }
+  }
+
   stampQr(nodes, W, H, R);
   return nodes;
 }
@@ -96,7 +117,8 @@ function threeBoards(W, H, sides, view) {
   const span = REF.top + (sides.length - 1) * REF.boardPitch + REF.boardSize + foot;
   const s = Math.min(W / A4.width, H / span), R = scaled(s);
   const content = W - 2 * R.margin;
-  const bottom = usableBottom(H, R);
+  const bottom = H - R.margin;
+  const avoid = qrBox(W, H, R);
   const rulesWidth = content - R.boardSize - R.gutter;
   const nodes = [];
 
@@ -105,13 +127,26 @@ function threeBoards(W, H, sides, view) {
     if (y + R.boardSize > H) return;
     const boardX = side === 'left' ? R.margin : W - R.margin - R.boardSize;
     const rulesX = side === 'left' ? R.margin + R.boardSize + R.gutter : R.margin;
-    boardRow(nodes, R, boardX, y, rulesX, rulesWidth, bottom, view);
+    boardRow(nodes, R, boardX, y, rulesX, rulesWidth, bottom, view, avoid);
     // A separator sits between consecutive sections, so every row but the last.
     if (i < sides.length - 1) {
       const sepY = y + R.boardSize + R.leadAfterBoard - s;
-      if (sepY < bottom) nodes.push(dottedRule(R.margin, sepY, content, 2 * s));
+      if (sepY < bottom) nodes.push(dottedRule(R.margin, sepY, content, 2 * s, avoid));
     }
   });
+
+  // Past the foot of the last board the page is clear from margin to margin, so
+  // the ruled lines carry on across the full width at the same pitch instead of
+  // ending in a blank band. They keep the last block's rhythm, so the lines beside
+  // the board and the lines below it read as one column of writing.
+  const last = R.top + (sides.length - 1) * R.boardPitch;
+  const clearOf = last + R.boardSize + R.leadAfterBoard;
+  for (let i = R.rulesPerBlock; ; i++) {
+    const at = last + R.rulesOffset + i * R.ruleGap;
+    if (at > bottom) break;
+    if (at >= clearOf) nodes.push(rules(R.margin, at, content, 1, R.ruleGap, avoid));
+  }
+
   stampQr(nodes, W, H, R);
   return nodes;
 }
@@ -140,12 +175,13 @@ function cornell(W, H, grid, view) {
   const regions = [
     { x: R.margin, y: R.cornellTop, width: R.cueWidth - s, height: bodyBottom - R.cornellTop },
     { x: dividerX + s, y: R.cornellTop, width: W - R.margin - dividerX - s, height: bodyBottom - R.cornellTop },
-    { x: R.margin, y: summaryY + s, width: content, height: Math.min(R.summaryHeight, usableBottom(H, R) - summaryY) },
+    { x: R.margin, y: summaryY + s, width: content, height: H - R.margin - summaryY - s },
   ];
 
+  const avoid = qrBox(W, H, R);
   const nodes = [];
   for (const rect of regions) {
-    const points = lattice(dividerX, summaryY, pitch, rect);
+    const points = lattice(dividerX, summaryY, pitch, rect, avoid);
     nodes.push(grid(points, pitch));
   }
 

@@ -122,20 +122,34 @@ export function qrCode(x, y, size, quiet = 3) {
   return g;
 }
 
+// `avoid` is a box no line may cross — in practice the QR code in the corner of
+// the page. A line at that height stops short of it; every other line is drawn
+// to its full width. Without this, content would have to stop a whole band above
+// the code and leave the rest of that band empty.
+const clipped = (x, y, width, avoid) =>
+  avoid && y >= avoid.y && y <= avoid.bottom && x + width > avoid.x
+    ? Math.max(0, avoid.x - x)
+    : width;
+
+export const inside = (avoid, x, y) =>
+  !!avoid && x >= avoid.x && x <= avoid.right && y >= avoid.y && y <= avoid.bottom;
+
 // A block of ruled writing lines, top-aligned at y.
-export function rules(x, y, width, count, gap) {
+export function rules(x, y, width, count, gap, avoid) {
   const g = el('g', {});
   for (let i = 0; i < count; i++) {
     const at = y + i * gap;
-    g.appendChild(el('rect', { x, y: at, width, height: 1, fill: COLOR.rule }));
+    const w = clipped(x, at, width, avoid);
+    if (w > 0) g.appendChild(el('rect', { x, y: at, width: w, height: 1, fill: COLOR.rule }));
   }
   return g;
 }
 
 // The dotted horizontal rule the original used between sections.
-export function dottedRule(x, y, width, step = 2) {
+export function dottedRule(x, y, width, step = 2, avoid) {
   const g = el('g', {});
-  for (let at = 0; at < width; at += step) {
+  const w = clipped(x, y, width, avoid);
+  for (let at = 0; at < w; at += step) {
     g.appendChild(el('rect', { x: x + at, y, width: 1, height: 1, fill: COLOR.separator }));
   }
   return g;
@@ -148,15 +162,18 @@ export function line(x, y, width, height, fill) {
 // Grids are drawn from a single lattice anchored on a given origin, so that
 // every region of a page shares one continuous grid rather than each starting
 // its own. `rect` clips it to the region being filled.
-export function lattice(originX, originY, pitch, rect) {
+export function lattice(originX, originY, pitch, rect, avoid) {
   const points = [];
   const i0 = Math.ceil((rect.x - originX) / pitch);
   const i1 = Math.floor((rect.x + rect.width - originX) / pitch);
   const j0 = Math.ceil((rect.y - originY) / pitch);
   const j1 = Math.floor((rect.y + rect.height - originY) / pitch);
-  for (let j = j0; j <= j1; j++)
-    for (let i = i0; i <= i1; i++)
-      points.push([originX + i * pitch, originY + j * pitch]);
+  for (let j = j0; j <= j1; j++) {
+    for (let i = i0; i <= i1; i++) {
+      const x = originX + i * pitch, y = originY + j * pitch;
+      if (!inside(avoid, x, y)) points.push([x, y]);
+    }
+  }
   return points;
 }
 

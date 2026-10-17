@@ -113,8 +113,10 @@ function cornell(W, H, grid) {
   const boardX = dividerX + pitch - gutter;
   const boardY = R.cornellTop;
 
+  // Regions are the space between the rules, not including them, so no grid
+  // point lands on the divider or the summary rule.
   const regions = [
-    { x: R.margin, y: R.cornellTop, width: R.cueWidth, height: bodyBottom - R.cornellTop },
+    { x: R.margin, y: R.cornellTop, width: R.cueWidth - s, height: bodyBottom - R.cornellTop },
     { x: dividerX + s, y: R.cornellTop, width: W - R.margin - dividerX - s, height: bodyBottom - R.cornellTop },
     { x: R.margin, y: summaryY + s, width: content, height: Math.min(R.summaryHeight, H - R.margin - summaryY) },
   ];

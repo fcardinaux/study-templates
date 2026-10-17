@@ -1,1 +1,1 @@
-# study-templates
+# Study Templates

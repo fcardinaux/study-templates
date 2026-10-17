@@ -132,6 +132,12 @@ Everything is drawn as explicit SVG rather than CSS backgrounds. That matters: C
 rasterises a CSS gradient when it prints, which is how the original dot and crosshair
 grids ended up as 72 dpi bitmaps on an otherwise vector page.
 
+## Share
+
+<img src="previews/repo-qr.png" width="150" alt="QR code linking to https://github.com/fcardinaux/study-templates">
+
+https://github.com/fcardinaux/study-templates
+
 ## License
 
 [Creative Commons Attribution 4.0 International](LICENSE) (CC BY 4.0).

@@ -59,12 +59,13 @@ for page in "${PAGES[@]}"; do
   done
 done
 
-# Previews illustrate the layouts in the README; one size is enough.
+# Previews illustrate the layouts in the README, so they use the coordinate-free
+# view: at 300px wide the labels are about 3px tall and read as speckle, not text.
 echo "Refreshing previews"
 mkdir -p previews
 for t in "${TEMPLATES[@]}"; do
   rm -f "previews/${t}.png"
-  qlmanage -t -s 1000 -o previews "pdf/${t}-white-view-a4.pdf" >/dev/null 2>&1
-  mv "previews/${t}-white-view-a4.pdf.png" "previews/${t}.png"
+  qlmanage -t -s 1000 -o previews "pdf/${t}-no-coords-a4.pdf" >/dev/null 2>&1
+  mv "previews/${t}-no-coords-a4.pdf.png" "previews/${t}.png"
 done
 echo "Done."

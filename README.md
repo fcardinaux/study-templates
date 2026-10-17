@@ -9,6 +9,9 @@ print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
+**[Download the whole set](https://github.com/fcardinaux/study-templates/releases/latest)**
+— all 54 PDFs in one archive. Or pick the ones you want below.
+
 ---
 
 ## Views

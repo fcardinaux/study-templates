@@ -104,23 +104,40 @@ export function line(x, y, width, height, fill) {
   return el('rect', { x, y, width, height, fill });
 }
 
-export function dotGrid(x, y, width, height, pitch, radius = 1.5) {
+// Grids are drawn from a single lattice anchored on a given origin, so that
+// every region of a page shares one continuous grid rather than each starting
+// its own. `rect` clips it to the region being filled.
+export function lattice(originX, originY, pitch, rect) {
+  const points = [];
+  const i0 = Math.ceil((rect.x - originX) / pitch);
+  const i1 = Math.floor((rect.x + rect.width - originX) / pitch);
+  const j0 = Math.ceil((rect.y - originY) / pitch);
+  const j1 = Math.floor((rect.y + rect.height - originY) / pitch);
+  for (let j = j0; j <= j1; j++)
+    for (let i = i0; i <= i1; i++)
+      points.push([originX + i * pitch, originY + j * pitch]);
+  return points;
+}
+
+export function dotGrid(points, radius) {
   const g = el('g', {});
-  for (let cy = pitch / 2; cy < height; cy += pitch)
-    for (let cx = pitch / 2; cx < width; cx += pitch)
-      g.appendChild(el('circle', { cx: x + cx, cy: y + cy, r: radius, fill: COLOR.grid }));
+  for (const [cx, cy] of points)
+    g.appendChild(el('circle', { cx, cy, r: radius, fill: COLOR.grid }));
   return g;
 }
 
-export function crosshairGrid(x, y, width, height, pitch, arm = 13, weight = 1) {
+export function crosshairGrid(points, arm, weight) {
   const g = el('g', {});
   const h = arm / 2;
-  for (let cy = pitch / 2; cy < height; cy += pitch) {
-    for (let cx = pitch / 2; cx < width; cx += pitch) {
-      const px = x + cx, py = y + cy;
-      g.appendChild(el('rect', { x: px - h, y: py - weight / 2, width: arm, height: weight, fill: COLOR.grid }));
-      g.appendChild(el('rect', { x: px - weight / 2, y: py - h, width: weight, height: arm, fill: COLOR.grid }));
-    }
+  for (const [cx, cy] of points) {
+    g.appendChild(el('rect', { x: cx - h, y: cy - weight / 2, width: arm, height: weight, fill: COLOR.grid }));
+    g.appendChild(el('rect', { x: cx - weight / 2, y: cy - h, width: weight, height: arm, fill: COLOR.grid }));
   }
   return g;
 }
+
+// The board is drawn on a 100-unit viewBox: an 84-unit playing area inside an
+// 8-unit coordinate gutter. These convert a wanted square size into the box and
+// gutter that produce it, which is how the board gets onto the lattice.
+export const boxForSquare = (square) => square * 100 / 10.5;
+export const gutterForSquare = (square) => square * 8 / 10.5;

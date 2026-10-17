@@ -5,7 +5,8 @@
 // ruled lines as the height allows, so a page with a different aspect ratio
 // keeps the same proportions instead of being letterboxed.
 
-import { board, rules, dottedRule, line, dotGrid, crosshairGrid, COLOR } from './lib.js';
+import { board, rules, dottedRule, line, lattice, dotGrid, crosshairGrid,
+         boxForSquare, gutterForSquare, COLOR } from './lib.js';
 
 export const A4 = { width: 795, height: 1124 };
 
@@ -22,7 +23,7 @@ const REF = {
   leadAfterBoard: 15,
   leadAfterBlock: 26,
   afterSeparator: 46,
-  gridPitch: 38.6,
+  gridRows: 23,          // lattice rows between the top margin and the summary rule
   cueWidth: 218,
   cornellHeight: 756,
   summaryRule: 824,
@@ -94,32 +95,47 @@ function threeBoards(W, H, sides) {
 }
 
 // Cornell layout: cue column, board at the head of the note column, summary band.
+//
+// One lattice spans the whole page, anchored on the crossing of the cue divider
+// and the summary rule, so the grid registers with both. The board's square size
+// is the lattice pitch and its playing area starts one cell right of the divider,
+// which puts every square corner on a grid point.
 function cornell(W, H, grid) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
   const dividerX = R.margin + R.cueWidth;
-  const noteX = dividerX + s;
-  const noteWidth = W - R.margin - noteX;
-  const bodyHeight = Math.min(R.cornellHeight, H - R.cornellTop - (H - R.summaryRule) - s);
   const summaryY = R.summaryRule;
-  const summaryHeight = Math.min(R.summaryHeight, H - R.margin - summaryY);
+  const bodyBottom = R.cornellTop + R.cornellHeight;
+
+  const pitch = (summaryY - R.cornellTop) / (R.gridRows + 8 / 10.5);
+  const boardSize = boxForSquare(pitch);
+  const gutter = gutterForSquare(pitch);
+  const boardX = dividerX + pitch - gutter;
+  const boardY = R.cornellTop;
+
+  const regions = [
+    { x: R.margin, y: R.cornellTop, width: R.cueWidth, height: bodyBottom - R.cornellTop },
+    { x: dividerX + s, y: R.cornellTop, width: W - R.margin - dividerX - s, height: bodyBottom - R.cornellTop },
+    { x: R.margin, y: summaryY + s, width: content, height: Math.min(R.summaryHeight, H - R.margin - summaryY) },
+  ];
+
   const nodes = [];
+  for (const rect of regions) {
+    const points = lattice(dividerX, summaryY, pitch, rect);
+    nodes.push(grid(points, pitch));
+  }
 
-  nodes.push(grid(R.margin, R.cornellTop, R.cueWidth, bodyHeight, R.gridPitch));
-  nodes.push(grid(noteX, R.cornellTop, noteWidth, bodyHeight, R.gridPitch));
-  nodes.push(grid(R.margin, summaryY + s, content, summaryHeight, R.gridPitch));
-
-  nodes.push(line(dividerX, R.cornellTop, s, bodyHeight, COLOR.divider));
+  nodes.push(line(dividerX, R.cornellTop, s, bodyBottom - R.cornellTop, COLOR.divider));
   nodes.push(line(R.margin, summaryY, content, s, COLOR.divider));
 
   // The board sits on an opaque panel so the grid does not show through it.
-  nodes.push(line(noteX, R.cornellTop, R.boardSize, R.boardSize, COLOR.light));
-  nodes.push(board(noteX, R.cornellTop, R.boardSize));
+  nodes.push(line(boardX, boardY, boardSize, boardSize, COLOR.light));
+  nodes.push(board(boardX, boardY, boardSize));
   return nodes;
 }
 
-const dots = (x, y, w, h, p) => dotGrid(x, y, w, h, p, p * 0.039);
-const crosshairs = (x, y, w, h, p) => crosshairGrid(x, y, w, h, p, p * 0.345, p * 0.026);
+const dots = (points, pitch) => dotGrid(points, pitch * 0.045);
+const crosshairs = (points, pitch) => crosshairGrid(points, pitch * 0.40, pitch * 0.030);
 
 export const LAYOUTS = {
   'chess-1-board-top-left': oneBoardTopLeft,

@@ -48,8 +48,9 @@ each position visually distinct from its neighbours, which helps when the three 
 
 The [Cornell note-taking layout](#about-the-cornell-layout) adapted for chess: a narrow
 cue column on the left for questions and keywords, the board at the top of the main
-column, and a summary band ruled off at the foot of the page. The dot grid underneath
-stays out of the way of both prose and sketched diagrams.
+column, and a summary band ruled off at the foot of the page. One grid runs across the
+whole page, anchored on the crossing of the two rules, and the board's squares are
+exactly one grid cell — so the dots, the rules and the board all line up.
 
 **[Download PDF](chess-cornell-dots.pdf)**
 
@@ -57,9 +58,9 @@ stays out of the way of both prose and sketched diagrams.
 
 <img src="previews/chess-cornell-crosshairs.png" width="300" alt="The same Cornell layout with a crosshair tick grid instead of dots">
 
-The same Cornell layout with a crosshair grid in place of dots. The ticks give you
-horizontal and vertical alignment cues rather than single points — easier to rule a
-straight line or draw a second board freehand, slightly busier on the page.
+The same Cornell layout, and the same grid, with a crosshair in place of each dot. The
+ticks give you horizontal and vertical alignment cues rather than single points — easier
+to rule a straight line or draw a second board freehand, slightly busier on the page.
 
 **[Download PDF](chess-cornell-crosshairs.pdf)**
 

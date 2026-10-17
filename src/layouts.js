@@ -45,8 +45,9 @@ const REF = {
 };
 
 // Entries that count something rather than measure it, so they must not scale
-// with the page. (`gridRows` is knowingly not in here — see the Cornell note.)
-const COUNTS = new Set(['rulesPerBlock']);
+// with the page. Leaving a count out of here is a quiet bug: it shrinks with the
+// page and whatever it was counting stops coming out whole.
+const COUNTS = new Set(['rulesPerBlock', 'gridRows']);
 
 const scaled = (s) => Object.fromEntries(
   Object.entries(REF).map(([k, v]) => [k, COUNTS.has(k) ? v : v * s]),

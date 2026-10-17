@@ -13,55 +13,55 @@ All five are one-page PDFs. Print, annotate, repeat.
 
 ### One board, notes below
 
-<img src="previews/Template_Chess_1_Board_TopLeft.png" width="300" alt="One board in the top-left corner with ruled lines beside and below it">
+<img src="previews/chess-1-board-top-left.png" width="300" alt="One board in the top-left corner with ruled lines beside and below it">
 
 A single board in the top-left corner, ruled lines to its right, and the rest of the
 page ruled edge to edge. The most writing space of the set — for annotating one
 position in depth: a game you are reviewing, a tactic you missed, an endgame you want
 to reason through.
 
-**[Download PDF](chess/Template_Chess_1_Board_TopLeft.pdf)**
+**[Download PDF](templates/chess-1-board-top-left.pdf)**
 
 ### Three boards, left column
 
-<img src="previews/Template_Chess_3_Boards_Left.png" width="300" alt="Three boards stacked down the left side, each with ruled lines to its right">
+<img src="previews/chess-3-boards-left.png" width="300" alt="Three boards stacked down the left side, each with ruled lines to its right">
 
 Three boards stacked down the left margin, each with its own block of ruled lines.
 A steady left-to-right rhythm — diagram, then commentary — that suits three related
 positions: an opening line at three branch points, or three puzzles in a row.
 
-**[Download PDF](chess/Template_Chess_3_Boards_Left.pdf)**
+**[Download PDF](templates/chess-3-boards-left.pdf)**
 
 ### Three boards, alternating
 
-<img src="previews/Template_Chess_3_Boards_Alternate.png" width="300" alt="Three boards alternating left, right, left down the page with ruled lines opposite each">
+<img src="previews/chess-3-boards-alternate.png" width="300" alt="Three boards alternating left, right, left down the page with ruled lines opposite each">
 
 The same three boards, alternating left–right–left down the page. The zig-zag makes
 each position visually distinct from its neighbours, which helps when the three are
 *not* a sequence but separate items you will scan back through later.
 
-**[Download PDF](chess/Template_Chess_3_Boards_Alternate.pdf)**
+**[Download PDF](templates/chess-3-boards-alternate.pdf)**
 
 ### Cornell layout, dot grid
 
-<img src="previews/Template_Chess_Cornell_Dots.png" width="300" alt="Cornell note layout with a cue column, a board at the top of the main column, a dot grid, and a summary band">
+<img src="previews/chess-cornell-dots.png" width="300" alt="Cornell note layout with a cue column, a board at the top of the main column, a dot grid, and a summary band">
 
 The [Cornell note-taking layout](#about-the-cornell-layout) adapted for chess: a narrow
 cue column on the left for questions and keywords, the board at the top of the main
 column, and a summary band ruled off at the foot of the page. The dot grid underneath
 stays out of the way of both prose and sketched diagrams.
 
-**[Download PDF](chess/Template_Chess_Cornell_Dots.pdf)**
+**[Download PDF](templates/chess-cornell-dots.pdf)**
 
 ### Cornell layout, crosshair grid
 
-<img src="previews/Template_Chess_Cornell_CrossHairs.png" width="300" alt="The same Cornell layout with a crosshair tick grid instead of dots">
+<img src="previews/chess-cornell-crosshairs.png" width="300" alt="The same Cornell layout with a crosshair tick grid instead of dots">
 
 The same Cornell layout with a crosshair grid in place of dots. The ticks give you
 horizontal and vertical alignment cues rather than single points — easier to rule a
 straight line or draw a second board freehand, slightly busier on the page.
 
-**[Download PDF](chess/Template_Chess_Cornell_CrossHairs.pdf)**
+**[Download PDF](templates/chess-cornell-crosshairs.pdf)**
 
 ---
 

@@ -105,25 +105,24 @@ to rule a straight line or draw a second board freehand, slightly busier on the 
 
 ### Scoresheet
 
-<img src="previews/chess-scoresheet.png" width="300" alt="A scoresheet: header fields, two columns of numbered move rows, and four small boards interleaved with the rows">
+<img src="previews/chess-scoresheet.png" width="300" alt="A scoresheet: header fields, two columns of numbered move rows, and a large board at the foot of each column">
 
 For recording a game rather than annotating a position. Two columns of numbered
-move rows, with a diagram after every block of moves and a few lines beside it —
-four diagrams a page, lined up across the two columns, so the positions are kept
-as well as the moves.
+move rows, and a board at the foot of each column, big enough to actually write a
+position into — about 7mm a square on A4 and 9mm on the other two sizes.
 
 The move numbers print **only their last digit**: 1 to 9, then 0, then 1 again.
 One sheet therefore serves any stretch of a game. Write the tens digit in by hand
 beside each 0 — a 1 for the teens, a 2 for the twenties — and the second sheet of
-a long game is this same sheet again, not a different one. The number column
-leaves room for that second digit.
+a long game is this same sheet again, not a different one.
 
-A4 holds 32 moves in blocks of 8; the shorter pages hold 28 in blocks of 7,
-because the rows give way before the diagrams do. The result goes at the foot,
-where you reach it last.
+A page always holds a whole number of tens, so the next sheet starts on a 1 just
+as this one does: 40 moves on A4, 30 on the shorter pages, which take fewer rows
+rather than smaller boards. The result goes at the foot, where you reach it last.
 
-The diagrams are too small to label, so this is the one template that comes
-coordinate-free only.
+The boards carry no coordinates — a position written into one needs the squares,
+not labels around them — so this is the one template that comes coordinate-free
+only.
 
 **Download** — [3:4](pdf/chess-scoresheet-no-coords-3x4.pdf) · [A4](pdf/chess-scoresheet-no-coords-a4.pdf) · [US Letter](pdf/chess-scoresheet-no-coords-letter.pdf)
 

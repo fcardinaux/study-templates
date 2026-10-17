@@ -19,9 +19,9 @@ TEMPLATES=(
 )
 
 # Page sizes at 96 dpi, as "<suffix>:<width>x<height>".
-#   (none) A4, 210x297mm
-#   -4x3   8.0 x 10.67in, the 4:3 proportion of a 13.3in e-ink panel
-PAGES=(":795x1124" "-4x3:768x1024")
+#   -a4    210x297mm
+#   -3x4   8.0 x 10.67in portrait, matching a 13.3in 4:3 e-ink panel
+PAGES=("-a4:795x1124" "-3x4:768x1024")
 
 PORT=${PORT:-8731}
 python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 &
@@ -58,7 +58,7 @@ echo "Refreshing previews"
 mkdir -p previews
 for t in "${TEMPLATES[@]}"; do
   rm -f "previews/${t}.png"
-  qlmanage -t -s 1000 -o previews "${t}.pdf" >/dev/null 2>&1
-  mv "previews/${t}.pdf.png" "previews/${t}.png"
+  qlmanage -t -s 1000 -o previews "${t}-a4.pdf" >/dev/null 2>&1
+  mv "previews/${t}-a4.pdf.png" "previews/${t}.png"
 done
 echo "Done."

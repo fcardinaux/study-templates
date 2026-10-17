@@ -5,6 +5,8 @@
 // crosshair grids in the first generation of these templates shipped as
 // 72 dpi bitmaps while the rest of the page stayed vector.
 
+import { QR } from './qr.js';
+
 const NS = 'http://www.w3.org/2000/svg';
 
 export function el(name, attrs = {}, children = []) {
@@ -24,6 +26,7 @@ export const COLOR = {
   separator: '#CCCCCC',   // dotted rule between sections
   divider: '#222222',     // Cornell cue-column and summary rules
   grid: '#CCCCCC',        // dot and crosshair grids
+  qr: '#111111',
 };
 
 // A board on a 100-unit viewBox: an 84-unit playing area inset by 8 units
@@ -33,7 +36,11 @@ const PLAY = 84;
 const SQUARE = PLAY / 8;          // 10.5
 const FILES = 'abcdefgh';
 
-export function board(x, y, size) {
+// `coordinates` draws the rank and file letters; `flipped` turns the board to
+// Black's side, putting h8 in the bottom-left corner. The squares themselves are
+// unchanged by flipping: a 180-degree turn maps (file, rank) to (9-file, 9-rank),
+// which preserves the colour of every square.
+export function board(x, y, size, { coordinates = true, flipped = false } = {}) {
   const g = el('svg', {
     x, y, width: size, height: size,
     viewBox: '0 0 100 100', overflow: 'visible',
@@ -62,6 +69,10 @@ export function board(x, y, size) {
     fill: 'none', stroke: COLOR.frame, 'stroke-width': 0.6,
   }));
 
+  // The gutter is kept even without coordinates, so all three views share one
+  // geometry and stay interchangeable on the page.
+  if (!coordinates) return g;
+
   const label = (text, cx, cy) => el('text', {
     x: cx, y: cy, fill: COLOR.label, 'font-size': 3.2, 'font-weight': 'bold',
     'font-family': 'Helvetica, Arial, sans-serif',
@@ -70,13 +81,43 @@ export function board(x, y, size) {
 
   for (let f = 0; f < 8; f++) {
     const cx = GUTTER + (f + 0.5) * SQUARE;
-    g.appendChild(label(FILES[f], cx, GUTTER / 2 + 0.5));
-    g.appendChild(label(FILES[f], cx, GUTTER + PLAY + GUTTER / 2 - 0.5));
+    const file = FILES[flipped ? 7 - f : f];
+    g.appendChild(label(file, cx, GUTTER / 2 + 0.5));
+    g.appendChild(label(file, cx, GUTTER + PLAY + GUTTER / 2 - 0.5));
   }
   for (let r = 0; r < 8; r++) {
     const cy = GUTTER + (r + 0.5) * SQUARE;
-    g.appendChild(label(String(8 - r), GUTTER / 2, cy));
-    g.appendChild(label(String(8 - r), GUTTER + PLAY + GUTTER / 2, cy));
+    const rank = String(flipped ? r + 1 : 8 - r);
+    g.appendChild(label(rank, GUTTER / 2, cy));
+    g.appendChild(label(rank, GUTTER + PLAY + GUTTER / 2, cy));
+  }
+  return g;
+}
+
+// The repository QR, drawn as vector. Horizontal runs of dark modules are merged
+// into single rects, which keeps the element count down. `quiet` is the white
+// margin the code needs to stay readable, measured in modules.
+export function qrCode(x, y, size, quiet = 3) {
+  const n = QR.length;
+  const m = size / n;
+  const pad = quiet * m;
+  const g = el('g', {});
+  g.appendChild(el('rect', {
+    x: x - pad, y: y - pad, width: size + 2 * pad, height: size + 2 * pad,
+    fill: COLOR.light,
+  }));
+  for (let r = 0; r < n; r++) {
+    const row = QR[r];
+    let c = 0;
+    while (c < n) {
+      if (row[c] !== '1') { c++; continue; }
+      let run = 1;
+      while (c + run < n && row[c + run] === '1') run++;
+      g.appendChild(el('rect', {
+        x: x + c * m, y: y + r * m, width: run * m, height: m, fill: COLOR.qr,
+      }));
+      c += run;
+    }
   }
   return g;
 }

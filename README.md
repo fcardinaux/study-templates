@@ -3,12 +3,25 @@
 Templates for studying chess by hand — blank boards paired with room to write, so a
 position and the notes about it live on the same page.
 
-Each one is a single-page PDF in two sizes: one shaped for a tablet note app, one for
-A4 paper. Drop one in as a page background and annotate it, or print it.
+Each one is a single-page PDF, in three board views and two page sizes. Drop one in as
+a page background and annotate it, or print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
 ---
+
+## Views
+
+Every template comes three ways. The squares are identical in all of them — only the
+labelling changes.
+
+| View | Bottom-left square | For |
+| --- | --- | --- |
+| **White view** | a1 | Studying from White's side, the usual choice |
+| **Black view** | h8 | Studying from Black's side, so the board matches what you see |
+| **No coordinates** | — | Visualisation and blindfold work, or an uncluttered diagram |
+
+And two page sizes: **3:4** for a tablet note app, **A4** for paper.
 
 ## Chess
 
@@ -21,7 +34,7 @@ page ruled edge to edge. The most writing space of the set — for annotating on
 position in depth: a game you are reviewing, a tactic you missed, an endgame you want
 to reason through.
 
-**Download:** [note app · 3:4](chess-1-board-top-left-3x4.pdf) · [paper · A4](chess-1-board-top-left-a4.pdf)
+**Download** — white view: [3:4](chess-1-board-top-left-white-view-3x4.pdf) · [A4](chess-1-board-top-left-white-view-a4.pdf) — black view: [3:4](chess-1-board-top-left-black-view-3x4.pdf) · [A4](chess-1-board-top-left-black-view-a4.pdf) — no coordinates: [3:4](chess-1-board-top-left-no-coords-3x4.pdf) · [A4](chess-1-board-top-left-no-coords-a4.pdf)
 
 ### Three boards, left column
 
@@ -31,7 +44,7 @@ Three boards stacked down the left margin, each with its own block of ruled line
 A steady left-to-right rhythm — diagram, then commentary — that suits three related
 positions: an opening line at three branch points, or three puzzles in a row.
 
-**Download:** [note app · 3:4](chess-3-boards-left-3x4.pdf) · [paper · A4](chess-3-boards-left-a4.pdf)
+**Download** — white view: [3:4](chess-3-boards-left-white-view-3x4.pdf) · [A4](chess-3-boards-left-white-view-a4.pdf) — black view: [3:4](chess-3-boards-left-black-view-3x4.pdf) · [A4](chess-3-boards-left-black-view-a4.pdf) — no coordinates: [3:4](chess-3-boards-left-no-coords-3x4.pdf) · [A4](chess-3-boards-left-no-coords-a4.pdf)
 
 ### Three boards, alternating
 
@@ -41,7 +54,7 @@ The same three boards, alternating left–right–left down the page. The zig-za
 each position visually distinct from its neighbours, which helps when the three are
 *not* a sequence but separate items you will scan back through later.
 
-**Download:** [note app · 3:4](chess-3-boards-alternate-3x4.pdf) · [paper · A4](chess-3-boards-alternate-a4.pdf)
+**Download** — white view: [3:4](chess-3-boards-alternate-white-view-3x4.pdf) · [A4](chess-3-boards-alternate-white-view-a4.pdf) — black view: [3:4](chess-3-boards-alternate-black-view-3x4.pdf) · [A4](chess-3-boards-alternate-black-view-a4.pdf) — no coordinates: [3:4](chess-3-boards-alternate-no-coords-3x4.pdf) · [A4](chess-3-boards-alternate-no-coords-a4.pdf)
 
 ### Cornell layout, dot grid
 
@@ -53,7 +66,7 @@ column, and a summary band ruled off at the foot of the page. One grid runs acro
 whole page, anchored on the crossing of the two rules, and the board's squares are
 exactly one grid cell — so the dots, the rules and the board all line up.
 
-**Download:** [note app · 3:4](chess-cornell-dots-3x4.pdf) · [paper · A4](chess-cornell-dots-a4.pdf)
+**Download** — white view: [3:4](chess-cornell-dots-white-view-3x4.pdf) · [A4](chess-cornell-dots-white-view-a4.pdf) — black view: [3:4](chess-cornell-dots-black-view-3x4.pdf) · [A4](chess-cornell-dots-black-view-a4.pdf) — no coordinates: [3:4](chess-cornell-dots-no-coords-3x4.pdf) · [A4](chess-cornell-dots-no-coords-a4.pdf)
 
 ### Cornell layout, crosshair grid
 
@@ -63,7 +76,7 @@ The same Cornell layout, and the same grid, with a crosshair in place of each do
 ticks give you horizontal and vertical alignment cues rather than single points — easier
 to rule a straight line or draw a second board freehand, slightly busier on the page.
 
-**Download:** [note app · 3:4](chess-cornell-crosshairs-3x4.pdf) · [paper · A4](chess-cornell-crosshairs-a4.pdf)
+**Download** — white view: [3:4](chess-cornell-crosshairs-white-view-3x4.pdf) · [A4](chess-cornell-crosshairs-white-view-a4.pdf) — black view: [3:4](chess-cornell-crosshairs-black-view-3x4.pdf) · [A4](chess-cornell-crosshairs-black-view-a4.pdf) — no coordinates: [3:4](chess-cornell-crosshairs-no-coords-3x4.pdf) · [A4](chess-cornell-crosshairs-no-coords-a4.pdf)
 
 ---
 
@@ -133,6 +146,9 @@ rasterises a CSS gradient when it prints, which is how the original dot and cros
 grids ended up as 72 dpi bitmaps on an otherwise vector page.
 
 ## Share
+
+Every template carries this code in its bottom-right corner, so a page on its own —
+printed, or open in a note app — still leads back here.
 
 <img src="previews/repo-qr.png" width="150" alt="QR code linking to https://github.com/fcardinaux/study-templates">
 

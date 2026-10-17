@@ -11,12 +11,16 @@
 </head>
 <body>
 <script type="module">
-import { LAYOUTS, A4 } from './layouts.js';
+import { LAYOUTS, VIEWS, A4 } from './layouts.js';
 
 const params = new URLSearchParams(location.search);
 const name = params.get('t') ?? 'chess-1-board-top-left';
 const W = Number(params.get('w') ?? A4.width);
 const H = Number(params.get('h') ?? A4.height);
+
+const viewName = params.get('v') ?? 'white-view';
+const view = VIEWS[viewName];
+if (!view) throw new Error(`unknown view: ${viewName}`);
 
 const layout = LAYOUTS[name];
 if (!layout) throw new Error(`unknown template: ${name}`);
@@ -34,7 +38,7 @@ bg.setAttribute('height', H);
 bg.setAttribute('fill', '#FFFFFF');
 svg.appendChild(bg);
 
-for (const node of layout(W, H)) svg.appendChild(node);
+for (const node of layout(W, H, view)) svg.appendChild(node);
 document.body.appendChild(svg);
 
 // Size the printed page to the artwork so there is no scaling and no margin.

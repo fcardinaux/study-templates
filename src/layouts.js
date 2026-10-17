@@ -6,7 +6,7 @@
 // keeps the same proportions instead of being letterboxed.
 
 import { board, rules, dottedRule, line, lattice, dotGrid, crosshairGrid,
-         boxForSquare, gutterForSquare, COLOR } from './lib.js';
+         qrCode, boxForSquare, gutterForSquare, COLOR } from './lib.js';
 
 export const A4 = { width: 795, height: 1124 };
 
@@ -28,18 +28,27 @@ const REF = {
   cornellHeight: 756,
   summaryRule: 824,
   summaryHeight: 195,
+  qrSize: 60,           // ~16mm on A4, which keeps a 33-module code scannable
+  qrGap: 14,            // clearance between the last content and the code
 };
 
 const scaled = (s) => Object.fromEntries(
   Object.entries(REF).map(([k, v]) => [k, k === 'rulesPerBlock' ? v : v * s]),
 );
 
+// The bottom of the usable area: the margin, less the room the QR needs. Keeping
+// the reserve on every layout means no content can ever run under the code.
+const usableBottom = (H, R) => H - R.margin - R.qrSize - R.qrGap;
+
+const stampQr = (nodes, W, H, R) =>
+  nodes.push(qrCode(W - R.margin - R.qrSize, H - R.margin - R.qrSize, R.qrSize));
+
 // How many lines of a block fit above the bottom margin, capped at a full block.
 const fit = (top, bottom, gap, max) =>
   Math.max(0, Math.min(max, Math.floor((bottom - top) / gap) + 1));
 
-function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom) {
-  nodes.push(board(x, y, R.boardSize));
+function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom, view) {
+  nodes.push(board(x, y, R.boardSize, view));
   const top = y + R.rulesOffset;
   const n = fit(top, bottom, R.ruleGap, R.rulesPerBlock);
   if (n) nodes.push(rules(rulesX, top, rulesWidth, n, R.ruleGap));
@@ -47,14 +56,14 @@ function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom) {
 }
 
 // One board top-left, then full-width ruled sections to the foot of the page.
-function oneBoardTopLeft(W, H) {
+function oneBoardTopLeft(W, H, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
-  const bottom = H - R.margin;
+  const bottom = usableBottom(H, R);
   const nodes = [];
   const rulesX = R.margin + R.boardSize + R.gutter;
 
-  boardRow(nodes, R, R.margin, R.top, rulesX, content - R.boardSize - R.gutter, bottom);
+  boardRow(nodes, R, R.margin, R.top, rulesX, content - R.boardSize - R.gutter, bottom, view);
 
   let cursor = R.top + R.boardSize - s;
   let lead = R.leadAfterBoard;
@@ -68,14 +77,15 @@ function oneBoardTopLeft(W, H) {
     cursor = top + (n - 1) * R.ruleGap;
     lead = R.leadAfterBlock;
   }
+  stampQr(nodes, W, H, R);
   return nodes;
 }
 
 // Three boards down the page; `sides` picks which margin each one sits against.
-function threeBoards(W, H, sides) {
+function threeBoards(W, H, sides, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
-  const bottom = H - R.margin;
+  const bottom = usableBottom(H, R);
   const rulesWidth = content - R.boardSize - R.gutter;
   const nodes = [];
 
@@ -84,13 +94,14 @@ function threeBoards(W, H, sides) {
     if (y + R.boardSize > H) return;
     const boardX = side === 'left' ? R.margin : W - R.margin - R.boardSize;
     const rulesX = side === 'left' ? R.margin + R.boardSize + R.gutter : R.margin;
-    boardRow(nodes, R, boardX, y, rulesX, rulesWidth, bottom);
+    boardRow(nodes, R, boardX, y, rulesX, rulesWidth, bottom, view);
     // A separator sits between consecutive sections, so every row but the last.
     if (i < sides.length - 1) {
       const sepY = y + R.boardSize + R.leadAfterBoard - s;
       if (sepY < bottom) nodes.push(dottedRule(R.margin, sepY, content, 2 * s));
     }
   });
+  stampQr(nodes, W, H, R);
   return nodes;
 }
 
@@ -100,7 +111,7 @@ function threeBoards(W, H, sides) {
 // and the summary rule, so the grid registers with both. The board's square size
 // is the lattice pitch and its playing area starts one cell right of the divider,
 // which puts every square corner on a grid point.
-function cornell(W, H, grid) {
+function cornell(W, H, grid, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
   const dividerX = R.margin + R.cueWidth;
@@ -118,7 +129,7 @@ function cornell(W, H, grid) {
   const regions = [
     { x: R.margin, y: R.cornellTop, width: R.cueWidth - s, height: bodyBottom - R.cornellTop },
     { x: dividerX + s, y: R.cornellTop, width: W - R.margin - dividerX - s, height: bodyBottom - R.cornellTop },
-    { x: R.margin, y: summaryY + s, width: content, height: Math.min(R.summaryHeight, H - R.margin - summaryY) },
+    { x: R.margin, y: summaryY + s, width: content, height: Math.min(R.summaryHeight, usableBottom(H, R) - summaryY) },
   ];
 
   const nodes = [];
@@ -132,7 +143,8 @@ function cornell(W, H, grid) {
 
   // The board sits on an opaque panel so the grid does not show through it.
   nodes.push(line(boardX, boardY, boardSize, boardSize, COLOR.light));
-  nodes.push(board(boardX, boardY, boardSize));
+  nodes.push(board(boardX, boardY, boardSize, view));
+  stampQr(nodes, W, H, R);
   return nodes;
 }
 
@@ -141,8 +153,15 @@ const crosshairs = (points, pitch) => crosshairGrid(points, pitch * 0.40, pitch 
 
 export const LAYOUTS = {
   'chess-1-board-top-left': oneBoardTopLeft,
-  'chess-3-boards-left': (W, H) => threeBoards(W, H, ['left', 'left', 'left']),
-  'chess-3-boards-alternate': (W, H) => threeBoards(W, H, ['left', 'right', 'left']),
-  'chess-cornell-dots': (W, H) => cornell(W, H, dots),
-  'chess-cornell-crosshairs': (W, H) => cornell(W, H, crosshairs),
+  'chess-3-boards-left': (W, H, v) => threeBoards(W, H, ['left', 'left', 'left'], v),
+  'chess-3-boards-alternate': (W, H, v) => threeBoards(W, H, ['left', 'right', 'left'], v),
+  'chess-cornell-dots': (W, H, v) => cornell(W, H, dots, v),
+  'chess-cornell-crosshairs': (W, H, v) => cornell(W, H, crosshairs, v),
+};
+
+// How the board is labelled. The squares are identical in all three.
+export const VIEWS = {
+  'white-view': { coordinates: true,  flipped: false },  // a1 bottom-left
+  'black-view': { coordinates: true,  flipped: true  },  // h8 bottom-left
+  'no-coords':  { coordinates: false, flipped: false },
 };

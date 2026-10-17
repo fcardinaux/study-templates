@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Study template</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; }
+  svg { display: block; }
+  @media print { @page { margin: 0; } }
+</style>
+</head>
+<body>
+<script type="module">
+import { LAYOUTS, A4 } from './layouts.js';
+
+const params = new URLSearchParams(location.search);
+const name = params.get('t') ?? 'chess-1-board-top-left';
+const W = Number(params.get('w') ?? A4.width);
+const H = Number(params.get('h') ?? A4.height);
+
+const layout = LAYOUTS[name];
+if (!layout) throw new Error(`unknown template: ${name}`);
+
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.createElementNS(NS, 'svg');
+svg.setAttribute('width', W);
+svg.setAttribute('height', H);
+svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+svg.setAttribute('xmlns', NS);
+
+const bg = document.createElementNS(NS, 'rect');
+bg.setAttribute('width', W);
+bg.setAttribute('height', H);
+bg.setAttribute('fill', '#FFFFFF');
+svg.appendChild(bg);
+
+for (const node of layout(W, H)) svg.appendChild(node);
+document.body.appendChild(svg);
+
+// Size the printed page to the artwork so there is no scaling and no margin.
+const style = document.createElement('style');
+style.textContent = `@page { size: ${W / 96}in ${H / 96}in; margin: 0; }`;
+document.head.appendChild(style);
+
+document.documentElement.dataset.ready = '1';
+</script>
+</body>
+</html>

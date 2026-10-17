@@ -87,8 +87,36 @@ These templates are not affiliated with, endorsed by, or connected to Cornell Un
 
 ## How these were made
 
-Designed by [François Cardinaux](https://github.com/fcardinaux) and generated with
-Google Gemini as HTML and CSS, then printed to PDF from Chrome.
+Designed by [François Cardinaux](https://github.com/fcardinaux). The first generation
+was produced with Google Gemini as HTML and CSS and printed to PDF from Chrome; the
+PDFs are now generated from the source in `src/`.
+
+## Building from source
+
+Every PDF in this repository is generated. To change a template, edit the source and
+rebuild — do not edit the PDFs.
+
+```
+./build.sh
+```
+
+That regenerates all five PDFs and refreshes the preview images. It needs Chrome
+(set `CHROME=/path/to/chrome` if yours is not in the usual place) and Python 3,
+which serves the sources locally because browsers will not load ES modules over
+`file://`.
+
+| File | What it holds |
+| --- | --- |
+| `src/lib.js` | The board, the ruled lines, and the dot and crosshair grids |
+| `src/layouts.js` | The five page layouts, and every measurement they share |
+| `src/render.html` | Draws one template at a given page size |
+
+Each layout is a function of the page size, so a page of different proportions keeps
+the same geometry and simply fits however many ruled lines the height allows.
+
+Everything is drawn as explicit SVG rather than CSS backgrounds. That matters: Chrome
+rasterises a CSS gradient when it prints, which is how the original dot and crosshair
+grids ended up as 72 dpi bitmaps on an otherwise vector page.
 
 ## License
 

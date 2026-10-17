@@ -18,8 +18,10 @@ TEMPLATES=(
   chess-cornell-dots
 )
 
-# A4 at 96 dpi. Add further page sizes as "<suffix>:<width>x<height>".
-PAGES=("${PAGES:-:795x1124}")
+# Page sizes at 96 dpi, as "<suffix>:<width>x<height>".
+#   (none) A4, 210x297mm
+#   -4x3   8.0 x 10.67in, the 4:3 proportion of a 13.3in e-ink panel
+PAGES=(":795x1124" "-4x3:768x1024")
 
 PORT=${PORT:-8731}
 python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 &
@@ -51,6 +53,7 @@ for page in "${PAGES[@]}"; do
   done
 done
 
+# Previews illustrate the layouts in the README; one size is enough.
 echo "Refreshing previews"
 mkdir -p previews
 for t in "${TEMPLATES[@]}"; do

@@ -16,8 +16,9 @@ print it.
 
 ## Views
 
-Every template comes three ways. The squares are identical in all of them — only the
-labelling changes.
+Every template with a full-size board comes three ways. The squares are identical in
+all of them — only the labelling changes. (The scoresheet is the exception: its
+diagrams are too small to label, so it comes coordinate-free only.)
 
 | View | Bottom-left square | For |
 | --- | --- | --- |
@@ -104,20 +105,27 @@ to rule a straight line or draw a second board freehand, slightly busier on the 
 
 ### Scoresheet
 
-<img src="previews/chess-scoresheet.png" width="300" alt="A scoresheet: fields for the players, a small board at the top right, and two columns of numbered move rows">
+<img src="previews/chess-scoresheet.png" width="300" alt="A scoresheet: header fields, two columns of numbered move rows, and four small boards interleaved with the rows">
 
-For recording a game rather than annotating a position — the one template here
-aimed at a whole game from first move to result. Fields for the players and the
-occasion, a small board at the top right for the position worth keeping (the
-final one, or the one where it turned), and two columns of numbered rows: 50
-moves on A4, fewer on a shorter page. The result goes at the foot, where you
-reach it last.
+For recording a game rather than annotating a position. Two columns of numbered
+move rows, with a diagram after every block of moves and a few lines beside it —
+four diagrams a page, lined up across the two columns, so the positions are kept
+as well as the moves.
 
-**Download**
+The move numbers print **only their last digit**: 1 to 9, then 0, then 1 again.
+One sheet therefore serves any stretch of a game. Write the tens digit in by hand
+beside each 0 — a 1 for the teens, a 2 for the twenties — and the second sheet of
+a long game is this same sheet again, not a different one. The number column
+leaves room for that second digit.
 
-- **3:4** — [white view](pdf/chess-scoresheet-white-view-3x4.pdf) · [black view](pdf/chess-scoresheet-black-view-3x4.pdf) · [no coordinates](pdf/chess-scoresheet-no-coords-3x4.pdf)
-- **A4** — [white view](pdf/chess-scoresheet-white-view-a4.pdf) · [black view](pdf/chess-scoresheet-black-view-a4.pdf) · [no coordinates](pdf/chess-scoresheet-no-coords-a4.pdf)
-- **US Letter** — [white view](pdf/chess-scoresheet-white-view-letter.pdf) · [black view](pdf/chess-scoresheet-black-view-letter.pdf) · [no coordinates](pdf/chess-scoresheet-no-coords-letter.pdf)
+A4 holds 32 moves in blocks of 8; the shorter pages hold 28 in blocks of 7,
+because the rows give way before the diagrams do. The result goes at the foot,
+where you reach it last.
+
+The diagrams are too small to label, so this is the one template that comes
+coordinate-free only.
+
+**Download** — [3:4](pdf/chess-scoresheet-no-coords-3x4.pdf) · [A4](pdf/chess-scoresheet-no-coords-a4.pdf) · [US Letter](pdf/chess-scoresheet-no-coords-letter.pdf)
 
 ### All six in one file
 

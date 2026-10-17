@@ -31,14 +31,16 @@ const REF = {
   qrGap: 14,            // clearance between the last content and the code
 
   // Scoresheet
-  sheetBoard: 200,      // diagram for the position worth keeping
   fieldTop: 36,         // first header field, relative to the top margin
   fieldPitch: 44,       // header field to header field
   fieldLabel: 54,       // room for a field's label before its rule starts
-  fieldRows: 4,         // count: White, Black, Event, Date
   headerGap: 34,        // header block to the move table
   colGap: 22,           // between the two halves of the move table
-  numberWidth: 34,      // the move-number column inside a half
+  numberWidth: 34,      // move-number column: one printed digit, room for one more
+  movesPerBlock: 8,     // count: move rows between one diagram and the next
+  boardsPerColumn: 2,   // count
+  bandGap: 12,          // clearance above and below a diagram
+  minDiagram: 150,      // below this a diagram is too small to draw in
   textSize: 11,
   numberSize: 10,
   textGap: 6,           // a label's baseline above the rule it sits on
@@ -46,7 +48,7 @@ const REF = {
 
 // Entries that count something rather than measure it, so they must not scale
 // with the page. (`gridRows` is knowingly not in here — see the Cornell note.)
-const COUNTS = new Set(['rulesPerBlock', 'fieldRows']);
+const COUNTS = new Set(['rulesPerBlock', 'movesPerBlock', 'boardsPerColumn']);
 
 const scaled = (s) => Object.fromEntries(
   Object.entries(REF).map(([k, v]) => [k, COUNTS.has(k) ? v : v * s]),
@@ -212,13 +214,23 @@ function cornell(W, H, grid, view) {
   return nodes;
 }
 
-// A scoresheet: who played, a diagram of the position worth keeping, and two
-// columns of numbered moves. The one template here that records a game rather
-// than annotating a position, and the one most likely to be printed.
+// A scoresheet: two columns of numbered move rows, with a diagram after every
+// block of moves so the position can be kept as well as the moves.
 //
-// The move rows share the ruled-line pitch of the other layouts, so a page holds
-// as many moves as the page height allows: 50 on A4, fewer on a shorter page.
-function scoresheet(W, H, view) {
+// The move numbers print only their last digit — 1..9, 0, 1..9, 0 — so one sheet
+// serves any stretch of a game. Write the tens digit in by hand beside each 0
+// and the second sheet of a long game is the first sheet again, not a different
+// one. The number column is wide enough for that second digit.
+//
+// The diagrams take whatever height the move rows leave, and the rows give way
+// first: a page that cannot hold `movesPerBlock` rows and still leave a diagram
+// worth drawing in carries fewer rows rather than a smaller board. Both columns
+// run the same schedule, so the diagrams line up across the page.
+//
+// The boards here are too small for coordinates, and without coordinates the
+// three views would be the same page three times, so this layout ignores the
+// view it is passed and the build renders it once.
+function scoresheet(W, H, _view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
   const bottom = H - R.margin;
@@ -226,43 +238,61 @@ function scoresheet(W, H, view) {
   const nodes = [];
 
   const small = { size: R.numberSize, fill: COLOR.gridline };
+  const half = (content - R.colGap) / 2;
+  const columns = [R.margin, R.margin + half + R.colGap];
 
-  // Header: the players and the occasion on the left, the diagram on the right.
-  const boardX = W - R.margin - R.sheetBoard;
-  nodes.push(board(boardX, R.top, R.sheetBoard, view));
-
-  const fieldEnd = boardX - R.colGap;
-  ['White', 'Black', 'Event', 'Date'].forEach((name, i) => {
+  // Header: who played, and the occasion.
+  [['White', 'Event'], ['Black', 'Date']].forEach((row, i) => {
     const y = R.top + R.fieldTop + i * R.fieldPitch;
-    nodes.push(text(name, R.margin, y - R.textGap, { size: R.textSize }));
-    nodes.push(line(R.margin + R.fieldLabel, y,
-                    fieldEnd - R.margin - R.fieldLabel, 1, COLOR.rule));
+    row.forEach((name, c) => {
+      nodes.push(text(name, columns[c], y - R.textGap, { size: R.textSize }));
+      nodes.push(line(columns[c] + R.fieldLabel, y,
+                      half - R.fieldLabel, 1, COLOR.rule));
+    });
   });
 
-  // The move table: two halves, each a move number and a cell per player. The
-  // numbers run down the first half and continue down the second.
-  const tableTop = R.top + R.sheetBoard + R.headerGap;
-  const rows = Math.floor((avoid.y - tableTop) / R.ruleGap);
-  const half = (content - R.colGap) / 2;
-  const cell = (half - R.numberWidth) / 2;
+  const tableTop = R.top + R.fieldTop + R.fieldPitch + R.headerGap;
+  const perColumn = (avoid.y - tableTop) / R.boardsPerColumn;
 
-  [R.margin, R.margin + half + R.colGap].forEach((x0, c) => {
+  let perBlock = R.movesPerBlock;
+  const diagram = (n) => perColumn - n * R.ruleGap - 2 * R.bandGap;
+  while (perBlock > 4 && diagram(perBlock) < R.minDiagram) perBlock--;
+  const boardSize = diagram(perBlock);
+
+  const cell = (half - R.numberWidth) / 2;
+  const perColumnMoves = perBlock * R.boardsPerColumn;
+
+  columns.forEach((x0, c) => {
     nodes.push(text('White', x0 + R.numberWidth + cell / 2, tableTop - R.textGap,
                     { ...small, anchor: 'middle' }));
     nodes.push(text('Black', x0 + R.numberWidth + cell * 1.5, tableTop - R.textGap,
                     { ...small, anchor: 'middle' }));
 
-    for (let i = 0; i <= rows; i++) {
-      nodes.push(line(x0, tableTop + i * R.ruleGap, half, 1, COLOR.rule));
-    }
-    for (const dx of [0, R.numberWidth, R.numberWidth + cell, half]) {
-      nodes.push(line(x0 + dx, tableTop, 1, rows * R.ruleGap, COLOR.separator));
-    }
-    for (let i = 0; i < rows; i++) {
-      nodes.push(text(String(c * rows + i + 1),
-                      x0 + R.numberWidth - R.textGap,
-                      tableTop + (i + 0.5) * R.ruleGap,
-                      { ...small, anchor: 'end', vcenter: true }));
+    let y = tableTop;
+    for (let b = 0; b < R.boardsPerColumn; b++) {
+      for (let i = 0; i <= perBlock; i++) {
+        nodes.push(line(x0, y + i * R.ruleGap, half, 1, COLOR.rule));
+      }
+      for (const dx of [0, R.numberWidth, R.numberWidth + cell, half]) {
+        nodes.push(line(x0 + dx, y, 1, perBlock * R.ruleGap, COLOR.separator));
+      }
+      for (let i = 0; i < perBlock; i++) {
+        const move = c * perColumnMoves + b * perBlock + i + 1;
+        nodes.push(text(String(move % 10),
+                        x0 + R.numberWidth - R.textGap,
+                        y + (i + 0.5) * R.ruleGap,
+                        { ...small, anchor: 'end', vcenter: true }));
+      }
+      y += perBlock * R.ruleGap + R.bandGap;
+
+      // The diagram for the position those moves reach, with a few lines beside
+      // it for what is worth saying about it.
+      nodes.push(board(x0, y, boardSize, { coordinates: false }));
+      const linesX = x0 + boardSize + R.gutter;
+      const n = Math.floor(boardSize / R.ruleGap);
+      if (n) nodes.push(rules(linesX, y + R.ruleGap, x0 + half - linesX,
+                              n, R.ruleGap, avoid));
+      y += boardSize + R.bandGap;
     }
   });
 

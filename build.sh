@@ -34,6 +34,15 @@ PAGES=("-a4:795x1124" "-3x4:768x1024" "-letter:816x1056")
 # Board labelling. The squares are the same in all three.
 VIEWS=(white-view black-view no-coords)
 
+# The scoresheet's diagrams are too small to label, and with no coordinates the
+# three views would be the same page under three names, so it is built once.
+views_for() {
+  case "$1" in
+    chess-scoresheet) echo no-coords ;;
+    *) echo "${VIEWS[@]}" ;;
+  esac
+}
+
 PORT=${PORT:-8731}
 python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 &
 SERVER=$!
@@ -67,7 +76,7 @@ for page in "${PAGES[@]}"; do
   h="${dims#*x}"
   size="${suffix#-}"
   for t in "${TEMPLATES[@]}"; do
-    for v in "${VIEWS[@]}"; do
+    for v in $(views_for "$t"); do
       render "$t" "$v" "$w" "$h" "$size" "pdf/${t}-${v}${suffix}.pdf"
     done
   done

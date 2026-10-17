@@ -206,6 +206,17 @@ export const LAYOUTS = {
   'chess-cornell-crosshairs': (W, H, v) => cornell(W, H, crosshairs, v),
 };
 
+// Human-readable names, used for the PDF title. A note app lists a file by its
+// title, so every file names its own layout, view and page size there as well as
+// in its filename.
+export const TITLES = {
+  'chess-1-board-top-left': 'one board, notes below',
+  'chess-3-boards-left': 'three boards, left column',
+  'chess-3-boards-alternate': 'three boards, alternating',
+  'chess-cornell-dots': 'Cornell layout, dot grid',
+  'chess-cornell-crosshairs': 'Cornell layout, crosshair grid',
+};
+
 // How the board is labelled. The squares are identical in all three.
 export const VIEWS = {
   'white-view': { coordinates: true,  flipped: false },  // a1 bottom-left

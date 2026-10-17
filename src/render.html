@@ -6,12 +6,14 @@
 <style>
   html, body { margin: 0; padding: 0; background: #fff; }
   svg { display: block; }
+  .page { break-after: page; }
+  .page:last-child { break-after: auto; }
   @media print { @page { margin: 0; } }
 </style>
 </head>
 <body>
 <script type="module">
-import { LAYOUTS, VIEWS, A4 } from './layouts.js';
+import { LAYOUTS, TITLES, VIEWS, A4 } from './layouts.js';
 
 const params = new URLSearchParams(location.search);
 const name = params.get('t') ?? 'chess-1-board-top-left';
@@ -22,24 +24,46 @@ const viewName = params.get('v') ?? 'white-view';
 const view = VIEWS[viewName];
 if (!view) throw new Error(`unknown view: ${viewName}`);
 
-const layout = LAYOUTS[name];
-if (!layout) throw new Error(`unknown template: ${name}`);
+// `all` draws every layout in order, one per page, as a single importable file.
+const names = name === 'all' ? Object.keys(LAYOUTS) : [name];
+for (const n of names) if (!LAYOUTS[n]) throw new Error(`unknown template: ${n}`);
 
 const NS = 'http://www.w3.org/2000/svg';
-const svg = document.createElementNS(NS, 'svg');
-svg.setAttribute('width', W);
-svg.setAttribute('height', H);
-svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-svg.setAttribute('xmlns', NS);
 
-const bg = document.createElementNS(NS, 'rect');
-bg.setAttribute('width', W);
-bg.setAttribute('height', H);
-bg.setAttribute('fill', '#FFFFFF');
-svg.appendChild(bg);
+function page(layout) {
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('xmlns', NS);
 
-for (const node of layout(W, H, view)) svg.appendChild(node);
-document.body.appendChild(svg);
+  const bg = document.createElementNS(NS, 'rect');
+  bg.setAttribute('width', W);
+  bg.setAttribute('height', H);
+  bg.setAttribute('fill', '#FFFFFF');
+  svg.appendChild(bg);
+
+  for (const node of layout(W, H, view)) svg.appendChild(node);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'page';
+  wrap.appendChild(svg);
+  return wrap;
+}
+
+for (const n of names) document.body.appendChild(page(LAYOUTS[n]));
+
+// The title is what a note app shows in its document list, so it says the same
+// three things the filename does rather than leaving every file called the same.
+const PAGE_LABEL = { a4: 'A4', '3x4': '3:4', letter: 'US Letter' };
+const VIEW_LABEL = {
+  'white-view': 'white view', 'black-view': 'black view',
+  'no-coords': 'no coordinates',
+};
+const what = name === 'all' ? 'all layouts' : TITLES[name];
+const size = PAGE_LABEL[params.get('p')];
+document.title = `Chess: ${what} — ${VIEW_LABEL[viewName]}`
+  + (size ? `, ${size}` : '');
 
 // Size the printed page to the artwork so there is no scaling and no margin.
 const style = document.createElement('style');

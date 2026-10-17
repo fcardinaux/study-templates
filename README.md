@@ -3,8 +3,9 @@
 Templates for studying chess by hand — blank boards paired with room to write, so a
 position and the notes about it live on the same page.
 
-Each one is a single-page PDF, in three board views and three page sizes. Drop one in
-as a page background and annotate it, or print it.
+Each one is a single-page PDF, in three board views and three page sizes — or take the
+whole set as one five-page file. Drop one in as a page background and annotate it, or
+print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
@@ -98,6 +99,18 @@ to rule a straight line or draw a second board freehand, slightly busier on the 
 - **A4** — [white view](pdf/chess-cornell-crosshairs-white-view-a4.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-cornell-crosshairs-white-view-letter.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-letter.pdf)
 
+### All five in one file
+
+Every layout above, in the same order, as a single five-page PDF — one import
+instead of five. These are in addition to the files above, not a replacement: the
+single-layout files are still there if you only want one.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-all-layouts-white-view-3x4.pdf) · [black view](pdf/chess-all-layouts-black-view-3x4.pdf) · [no coordinates](pdf/chess-all-layouts-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-all-layouts-white-view-a4.pdf) · [black view](pdf/chess-all-layouts-black-view-a4.pdf) · [no coordinates](pdf/chess-all-layouts-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-all-layouts-white-view-letter.pdf) · [black view](pdf/chess-all-layouts-black-view-letter.pdf) · [no coordinates](pdf/chess-all-layouts-no-coords-letter.pdf)
+
 ---
 
 ## Using them in a note app
@@ -155,7 +168,7 @@ which serves the sources locally because browsers will not load ES modules over
 | `src/lib.js` | The board, the ruled lines, and the dot and crosshair grids |
 | `src/layouts.js` | The five page layouts, and every measurement they share |
 | `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
-| `src/render.html` | Draws one template at a given view and page size |
+| `src/render.html` | Draws one template, or all five, at a given view and page size |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.

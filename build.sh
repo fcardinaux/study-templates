@@ -46,23 +46,34 @@ mkdir -p pdf
 PROFILE=$(mktemp -d)
 trap 'kill $SERVER 2>/dev/null || true; rm -rf "$PROFILE"' EXIT
 
+# <template> <view> <width> <height> <page size> <output file>. The page size is
+# passed through so the PDF can title itself the way its filename reads.
+render() {
+  "$CHROME" --headless --disable-gpu --no-sandbox \
+    --user-data-dir="$PROFILE" \
+    --virtual-time-budget=4000 \
+    --no-pdf-header-footer \
+    --print-to-pdf="$6" \
+    "http://127.0.0.1:$PORT/src/render.html?t=${1}&v=${2}&w=${3}&h=${4}&p=${5}" \
+    >/dev/null 2>&1
+  printf '  %-54s %7s bytes\n' "$6" "$(wc -c < "$6" | tr -d ' ')"
+}
+
 for page in "${PAGES[@]}"; do
   suffix="${page%%:*}"
   dims="${page##*:}"
   w="${dims%x*}"
   h="${dims#*x}"
+  size="${suffix#-}"
   for t in "${TEMPLATES[@]}"; do
     for v in "${VIEWS[@]}"; do
-      out="pdf/${t}-${v}${suffix}.pdf"
-      "$CHROME" --headless --disable-gpu --no-sandbox \
-        --user-data-dir="$PROFILE" \
-        --virtual-time-budget=4000 \
-        --no-pdf-header-footer \
-        --print-to-pdf="$out" \
-        "http://127.0.0.1:$PORT/src/render.html?t=${t}&v=${v}&w=${w}&h=${h}" \
-        >/dev/null 2>&1
-      printf '  %-50s %7s bytes\n' "$out" "$(wc -c < "$out" | tr -d ' ')"
+      render "$t" "$v" "$w" "$h" "$size" "pdf/${t}-${v}${suffix}.pdf"
     done
+  done
+  # Every layout in one five-page file, for importing the set in one go. These
+  # are an addition to the single-layout files, not a replacement for them.
+  for v in "${VIEWS[@]}"; do
+    render all "$v" "$w" "$h" "$size" "pdf/chess-all-layouts-${v}${suffix}.pdf"
   done
 done
 

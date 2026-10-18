@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Download page tests</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 24px; background: #fff; color: #111; }
+  li { margin: 6px 0; }
+  .pass b { color: #17663a; }
+  .fail b { color: #b3261e; }
+  .why { color: #666; }
+  iframe { width: 1200px; height: 800px; border: 1px solid #ccc; margin-top: 16px; }
+</style>
+</head>
+<body>
+<h1>Download page tests</h1>
+<p>Each test opens the real <code>index.html</code> in the frame below and uses it
+as a visitor would: clicking controls, then reading what the page shows. Run them
+all from the command line with <code>tests/run.sh</code>, or open this page from a
+local server to watch.</p>
+<ol id="results"></ol>
+<pre id="summary">running</pre>
+<iframe id="frame" title="The page under test"></iframe>
+
+<script type="module">
+// The page imports these too, so the tests check it against the same source of
+// truth rather than against a second copy of the facts that could drift.
+import { LAYOUTS, FACETS, VIEWS } from '../src/layouts.js';
+
+const frame = document.getElementById('frame');
+const DEFAULTS = { side: 'both', view: 'white-view', size: '3x4' };
+const catalog = await (await fetch('../catalog.json')).json();
+
+// Opens the page at `query` and waits until it has drawn its results. Errors the
+// page throws afterwards — from a click handler, say — are collected, so a test
+// fails on them even when the page looks unchanged. That is how the reset button
+// failed: it threw, and nothing on the page moved.
+async function open(query = '') {
+  await new Promise((ok) => { frame.onload = ok; frame.src = `../index.html${query}`; });
+  const w = frame.contentWindow, d = frame.contentDocument;
+  const errors = [];
+  w.addEventListener('error', (e) => errors.push(e.message));
+  w.addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
+  await until(() => !/Loading/.test(d.getElementById('count').textContent), 'the page to load');
+  return {
+    w, d, errors,
+    files: () => [...d.querySelectorAll('#cards a.get')].map((a) => a.getAttribute('href')),
+    picked: (name) => d.querySelector(`input[name=${name}]:checked`)?.value,
+    kinds: () => [...d.querySelectorAll('input[name=kind]:checked')].map((i) => i.value),
+    query: () => Object.fromEntries(new URLSearchParams(w.location.search)),
+    click: (selector) => d.querySelector(selector).click(),
+    // Buttons are found by what they say, as a visitor finds them, so a test
+    // does not depend on an id the page is free to change.
+    press: (label) => {
+      const b = [...d.querySelectorAll('button')].find((x) => x.textContent.trim() === label);
+      if (!b) throw new Error(`no button labelled "${label}"`);
+      b.click();
+    },
+    choose: (name, value) => {
+      const i = d.querySelector(`input[name=${name}][value="${value}"]`);
+      i.click();
+    },
+  };
+}
+
+async function until(test, what, ms = 15000) {
+  const end = Date.now() + ms;
+  while (!test()) {
+    if (Date.now() > end) throw new Error(`timed out waiting for ${what}`);
+    await new Promise((r) => setTimeout(r, 25));
+  }
+}
+
+function check(ok, message) { if (!ok) throw new Error(message); }
+const same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+const layoutOf = (file) => Object.keys(LAYOUTS).concat('chess-all-layouts')
+  .sort((a, b) => b.length - a.length).find((l) => file.startsWith(`pdf/${l}-`));
+const ALL_KINDS = [...new Set(Object.values(FACETS).map((f) => f.kind)), 'all'];
+
+const TESTS = [
+  {
+    name: 'The default view lists one file per layout, plus the one-file set',
+    why: 'Every layout must be reachable without touching a filter.',
+    async run() {
+      const p = await open();
+      check(same(p.kinds(), ALL_KINDS), `layouts ticked: ${p.kinds()}`);
+      for (const [k, v] of Object.entries(DEFAULTS)) check(p.picked(k) === v, `${k} is ${p.picked(k)}`);
+      const layouts = p.files().map(layoutOf);
+      check(same(layouts, [...Object.keys(LAYOUTS), 'chess-all-layouts']), `shown: ${layouts}`);
+      return p;
+    },
+  },
+  {
+    name: 'Every layout has a checkbox, so none can be filtered out of reach',
+    why: 'A new layout needs a kind in FACETS and a label in the page’s KINDS.',
+    async run() {
+      for (const l of Object.keys(LAYOUTS)) check(FACETS[l], `${l} has no FACETS entry`);
+      const p = await open();
+      const boxes = [...p.d.querySelectorAll('input[name=kind]')].map((i) => i.value);
+      check(same(boxes, ALL_KINDS), `checkboxes ${boxes}, kinds ${ALL_KINDS}`);
+      return p;
+    },
+  },
+  {
+    name: 'Every PDF in the catalog can be reached through some choice of filters',
+    why: 'A file the filters cannot show is a file nobody downloads from the page.',
+    async run() {
+      const p = await open();
+      const seen = new Set();
+      for (const view of Object.keys(VIEWS)) {
+        for (const size of ['3x4', 'a4', 'letter']) {
+          p.choose('view', view); p.choose('size', size);
+          p.files().forEach((f) => seen.add(f));
+        }
+      }
+      const missing = catalog.map((c) => c.file).filter((f) => !seen.has(f));
+      check(!missing.length, `never shown: ${missing.join(', ')}`);
+      return p;
+    },
+  },
+  {
+    name: 'Every file in the catalog, and every preview, is actually served',
+    why: 'A renamed PDF or preview leaves a card whose link is dead.',
+    async run() {
+      const paths = catalog.map((c) => c.file)
+        .concat(Object.keys(LAYOUTS).map((l) => `previews/${l}.png`));
+      const dead = [];
+      await Promise.all(paths.map(async (path) => {
+        const r = await fetch(`../${path}`, { method: 'HEAD' });
+        if (!r.ok) dead.push(`${path} (${r.status})`);
+      }));
+      check(!dead.length, `not served: ${dead.join(', ')}`);
+    },
+  },
+  {
+    name: 'The side filter shows only that side, and keeps the side-less pages',
+    why: 'The scoresheet and the one-file set have no side and must not vanish.',
+    async run() {
+      const p = await open();
+      for (const side of ['left', 'right']) {
+        p.choose('side', side);
+        for (const f of p.files()) {
+          const l = layoutOf(f);
+          const s = FACETS[l]?.side;
+          check(!s || s === side, `${f} shown under ${side}`);
+        }
+        const layouts = p.files().map(layoutOf);
+        check(layouts.includes('chess-scoresheet') && layouts.includes('chess-all-layouts'),
+          `side-less pages missing under ${side}`);
+      }
+      return p;
+    },
+  },
+  {
+    name: 'A layout made in one view only is shown whatever view is picked',
+    why: 'The scoresheet has no coordinates; picking white view must not hide it.',
+    async run() {
+      const p = await open('?layout=scoresheet&view=black-view&size=a4');
+      check(same(p.files(), ['pdf/chess-scoresheet-no-coords-a4.pdf']), `shown: ${p.files()}`);
+      return p;
+    },
+  },
+  {
+    name: 'Filters load from the address, and the address follows the filters',
+    why: 'A filtered view can be bookmarked or sent, and must open as it was.',
+    async run() {
+      const p = await open('?layout=one-board,cornell-dots&side=right&view=no-coords&size=letter');
+      check(same(p.kinds(), ['one-board', 'cornell-dots']), `layouts: ${p.kinds()}`);
+      check(p.picked('side') === 'right' && p.picked('view') === 'no-coords' &&
+            p.picked('size') === 'letter', 'radios not restored from the address');
+      check(same(p.files(), ['pdf/chess-1-board-top-right-no-coords-letter.pdf',
+                             'pdf/chess-cornell-dots-cue-right-no-coords-letter.pdf']),
+            `shown: ${p.files()}`);
+      p.choose('size', 'a4');
+      check(p.query().size === 'a4', `address says size=${p.query().size}`);
+      return p;
+    },
+  },
+  {
+    name: 'Reset filters returns every control, the results and the address to the defaults',
+    why: 'It once did nothing: its id shadowed form.reset(), and the click threw.',
+    async run() {
+      const p = await open('?layout=one-board&side=right&view=black-view&size=a4');
+      p.press('Reset filters');
+      check(same(p.kinds(), ALL_KINDS), `layouts after reset: ${p.kinds()}`);
+      for (const [k, v] of Object.entries(DEFAULTS)) {
+        check(p.picked(k) === v, `${k} is ${p.picked(k)} after reset`);
+        check(p.query()[k] === v, `address has ${k}=${p.query()[k]} after reset`);
+      }
+      check(p.files().length === Object.keys(LAYOUTS).length + 1, `${p.files().length} files after reset`);
+      return p;
+    },
+  },
+  {
+    name: 'All and None tick and clear every layout',
+    why: 'They are the quick way back from a narrow selection.',
+    async run() {
+      const p = await open();
+      p.press('None');
+      check(!p.kinds().length && !p.files().length, 'None left something selected');
+      check(p.d.getElementById('zip').disabled, 'zip enabled with nothing to zip');
+      p.press('All');
+      check(same(p.kinds(), ALL_KINDS), `All ticked: ${p.kinds()}`);
+      return p;
+    },
+  },
+  {
+    name: 'The Cornell notice shows exactly when a Cornell page is in the results',
+    why: 'The non-affiliation line must accompany the Cornell pages, as in the README.',
+    async run() {
+      const notice = (p) => !p.d.getElementById('cornell').hidden;
+      const cases = { 'one-board,scoresheet': false, 'cornell-dots': true,
+                      'cornell-crosshairs': true, 'all': true };
+      for (const [layout, shown] of Object.entries(cases)) {
+        const p = await open(`?layout=${layout}`);
+        check(notice(p) === shown, `notice ${notice(p) ? 'shown' : 'hidden'} for ${layout}`);
+        check(/not affiliated/.test(p.d.getElementById('cornell').textContent), 'disclaimer text missing');
+        check(!p.errors.length, p.errors.join('; '));
+      }
+    },
+  },
+  {
+    name: 'The zip holds the selected PDFs, the README and the licence',
+    why: 'CC BY asks for attribution, so the files must travel with their terms. Needs network access for the zip library.',
+    async run() {
+      const p = await open('?layout=one-board&side=both&view=white-view&size=a4');
+      let blob = null;
+      p.w.URL.createObjectURL = (b) => { blob = b; return 'about:blank'; };
+      p.w.HTMLAnchorElement.prototype.click = () => {};   // no real download
+      const expected = p.files();
+      p.press('Download as zip');
+      await until(() => blob || /could not/.test(p.d.getElementById('count').textContent), 'the zip', 30000);
+      check(blob, p.d.getElementById('count').textContent);
+      const names = Object.keys((await new p.w.JSZip().loadAsync(blob)).files)
+        .filter((n) => !n.endsWith('/'));   // folders are entries too
+      check(same(names, [...expected, 'README.md', 'LICENSE']), `zip holds: ${names}`);
+      return p;
+    },
+  },
+  {
+    name: 'Search and sharing tags point at the live page and resolve',
+    why: 'A wrong canonical or a missing preview image fails silently, outside the page.',
+    async run() {
+      const p = await open();
+      const URL = 'https://fcardinaux.github.io/study-templates/';
+      const canonical = p.d.querySelector('link[rel=canonical]')?.href;
+      check(canonical === URL, `canonical is ${canonical}`);
+      const image = p.d.querySelector('meta[property="og:image"]')?.content ?? '';
+      check(image.startsWith(URL), `og:image is ${image}`);
+      const r = await fetch(`../${image.slice(URL.length)}`, { method: 'HEAD' });
+      check(r.ok, `og:image not served (${r.status})`);
+      JSON.parse(p.d.querySelector('script[type="application/ld+json"]').textContent);
+      return p;
+    },
+  },
+];
+
+const list = document.getElementById('results');
+let failed = 0;
+for (const t of TESTS) {
+  const li = document.createElement('li');
+  try {
+    const p = await t.run();
+    if (p) check(!p.errors.length, `the page threw: ${p.errors.join('; ')}`);
+    li.className = 'pass';
+    li.innerHTML = `<b>PASS</b> `;
+  } catch (e) {
+    failed++;
+    li.className = 'fail';
+    li.innerHTML = `<b>FAIL</b> `;
+    li.dataset.reason = e.message;
+  }
+  li.append(t.name);
+  if (li.dataset.reason) li.append(` — ${li.dataset.reason}`);
+  const why = document.createElement('div');
+  why.className = 'why';
+  why.textContent = t.why;
+  li.appendChild(why);
+  list.appendChild(li);
+}
+document.getElementById('summary').textContent =
+  `DONE ${TESTS.length - failed} passed, ${failed} failed`;
+</script>
+</body>
+</html>

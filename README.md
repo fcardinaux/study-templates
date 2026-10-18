@@ -268,6 +268,7 @@ which serves the sources locally because browsers will not load ES modules over
 | `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
 | `src/render.html` | Draws one template, or all of them, at a given view and page size |
 | `index.html` | The download page, which filters `catalog.json` — a list of the PDFs the build writes |
+| `tests/` | Tests for the download page: `tests/run.sh` runs them in headless Chrome |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.

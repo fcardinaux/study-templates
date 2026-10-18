@@ -11,7 +11,11 @@ print it.
 [![Checks](https://github.com/fcardinaux/study-templates/actions/workflows/checks.yml/badge.svg)](https://github.com/fcardinaux/study-templates/actions/workflows/checks.yml)
 
 **[Browse and filter them](https://fcardinaux.github.io/study-templates/)** — pick a
-layout, a board view and a page size, and download just those.
+layout, a board view and a page size, and download just those. Also in
+[français](https://fcardinaux.github.io/study-templates/fr/),
+[Deutsch](https://fcardinaux.github.io/study-templates/de/),
+[italiano](https://fcardinaux.github.io/study-templates/it/) and
+[español](https://fcardinaux.github.io/study-templates/es/).
 **[Download the whole set](https://github.com/fcardinaux/study-templates/releases/latest)**
 — every PDF in one archive. Or pick the ones you want below.
 
@@ -268,7 +272,7 @@ which serves the sources locally because browsers will not load ES modules over
 | `src/layouts.js` | The page layouts, and every measurement they share |
 | `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
 | `src/render.html` | Draws one template, or all of them, at a given view and page size |
-| `index.html` | The download page, which filters `catalog.json` — a list of the PDFs the build writes |
+| `index.html`, `fr/`, `de/`, `it/`, `es/` | The download page in five languages, generated from `src/site/` by `tools/site.py`; it filters `catalog.json`, a list of the PDFs the build writes |
 | `tests/` | Tests for the download page: `tests/run.sh` runs them in headless Chrome |
 | `tools/check.sh` | Every check, from vector-only PDFs to a decodable QR code; GitHub runs it on each push |
 

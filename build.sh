@@ -123,6 +123,10 @@ json.dump(files, sys.stdout, indent=1)
 print()
 CAT
 
+# The download page, in every language, from src/site/.
+echo "Writing the download page"
+python3 tools/site.py
+
 # Previews illustrate the layouts in the README, so they use the coordinate-free
 # view: at 300px wide the labels are about 3px tall and read as speckle, not text.
 echo "Refreshing previews"
@@ -134,10 +138,16 @@ for t in "${TEMPLATES[@]}"; do
 done
 
 # The image a link to the download page shows when shared, made from the
-# previews above, at the 1200x630 that link previews expect.
-echo "Refreshing social card"
-"$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
-  --user-data-dir="$PROFILE" --virtual-time-budget=4000 \
-  --window-size=1200,630 --screenshot=previews/social.png \
-  "http://127.0.0.1:$PORT/src/social.html" >/dev/null 2>&1
+# previews above, at the 1200x630 that link previews expect: one per language,
+# English as plain social.png.
+echo "Refreshing social cards"
+LANGS=$(python3 tools/site.py --langs)
+for lang in $LANGS; do
+  out=previews/social.png
+  [ "$lang" = "${LANGS%% *}" ] || out="previews/social-$lang.png"
+  "$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
+    --user-data-dir="$PROFILE" --virtual-time-budget=4000 \
+    --window-size=1200,630 --screenshot="$out" \
+    "http://127.0.0.1:$PORT/src/social.html?lang=$lang" >/dev/null 2>&1
+done
 echo "Done."

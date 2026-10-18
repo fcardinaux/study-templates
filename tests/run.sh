@@ -55,8 +55,11 @@ for _ in $(seq 40); do
 done
 
 # Remote debugging keeps headless Chrome open on the page until it is killed.
+# The browser prefers German, so the language-offer test has something to offer
+# on every page but the German one.
 "$CHROME" --headless --disable-gpu --no-sandbox --user-data-dir="$WORK/profile" \
-  --remote-debugging-port=0 "http://127.0.0.1:$PORT/tests/page.html" >/dev/null 2>&1 &
+  --accept-lang=de-CH,de,en --remote-debugging-port=0 \
+  "http://127.0.0.1:$PORT/tests/page.html" >/dev/null 2>&1 &
 CHROME_PID=$!
 
 end=$((SECONDS + TIMEOUT))

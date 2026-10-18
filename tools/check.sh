@@ -93,7 +93,13 @@ sys.exit(1 if bad else 0)
 TITLES
 then pass "titles"; else fail "titles"; fi
 
-# 6. The download page, driven in a browser.
+# 6. The download page in every language is generated; a hand edit, or a
+#    source change without a build, leaves it stale.
+step "Download page is generated from src/site/"
+if python3 tools/site.py --check; then pass "every language page is current"
+else fail "generated pages are stale"; fi
+
+# 7. The download page, driven in a browser, in every language.
 step "Download page tests"
 if tests/run.sh; then pass "page tests"; else fail "page tests"; fi
 

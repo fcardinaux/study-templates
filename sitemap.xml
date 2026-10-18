@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://fcardinaux.github.io/study-templates/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://fcardinaux.github.io/study-templates/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fcardinaux.github.io/study-templates/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fcardinaux.github.io/study-templates/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://fcardinaux.github.io/study-templates/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://fcardinaux.github.io/study-templates/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fcardinaux.github.io/study-templates/es/"/>
+  </url>
+  <url>
+    <loc>https://fcardinaux.github.io/study-templates/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fcardinaux.github.io/study-templates/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fcardinaux.github.io/study-templates/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://fcardinaux.github.io/study-templates/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://fcardinaux.github.io/study-templates/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fcardinaux.github.io/study-templates/es/"/>
+  </url>
+  <url>
+    <loc>https://fcardinaux.github.io/study-templates/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fcardinaux.github.io/study-templates/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fcardinaux.github.io/study-templates/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://fcardinaux.github.io/study-templates/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://fcardinaux.github.io/study-templates/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fcardinaux.github.io/study-templates/es/"/>
+  </url>
+  <url>
+    <loc>https://fcardinaux.github.io/study-templates/it/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fcardinaux.github.io/study-templates/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fcardinaux.github.io/study-templates/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://fcardinaux.github.io/study-templates/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://fcardinaux.github.io/study-templates/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fcardinaux.github.io/study-templates/es/"/>
+  </url>
+  <url>
+    <loc>https://fcardinaux.github.io/study-templates/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fcardinaux.github.io/study-templates/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fcardinaux.github.io/study-templates/fr/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://fcardinaux.github.io/study-templates/de/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://fcardinaux.github.io/study-templates/it/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fcardinaux.github.io/study-templates/es/"/>
+  </url>
 </urlset>

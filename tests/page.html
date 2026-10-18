@@ -14,10 +14,11 @@
 </head>
 <body>
 <h1>Download page tests</h1>
-<p>Each test opens the real <code>index.html</code> in the frame below and uses it
-as a visitor would: clicking controls, then reading what the page shows. Run them
-all from the command line with <code>tests/run.sh</code>, or open this page from a
-local server to watch.</p>
+<p>Each test opens the real download page in the frame below and uses it as a
+visitor would: clicking controls, then reading what the page shows. Every test
+runs on the page in every language, except the few marked as language-free. Run
+them all from the command line with <code>tests/run.sh</code>, or open this page
+from a local server to watch.</p>
 <ol id="results"></ol>
 <pre id="summary">running</pre>
 <iframe id="frame" title="The page under test"></iframe>
@@ -29,26 +30,40 @@ import { LAYOUTS, FACETS, VIEWS } from '../src/layouts.js';
 
 const frame = document.getElementById('frame');
 const DEFAULTS = { side: 'both', view: 'white-view', size: '3x4' };
+const BASE = 'https://fcardinaux.github.io/study-templates/';
 const catalog = await (await fetch('../catalog.json')).json();
+
+// tests/run.sh serves this page and listens for results at /__report, one line
+// per test as it finishes, so a run that hangs still shows how far it got. Opened
+// from any other server the report has nowhere to go, which is fine.
+const report = (line) =>
+  fetch('/__report', { method: 'POST', body: line }).catch(() => {});
+
+// The language under test, as a folder: '' is the root page, in the first language.
+let dir = '';
 
 // Opens the page at `query` and waits until it has drawn its results. Errors the
 // page throws afterwards — from a click handler, say — are collected, so a test
 // fails on them even when the page looks unchanged. That is how the reset button
-// failed: it threw, and nothing on the page moved.
+// failed: it threw, and nothing on the page moved. The remembered language choice
+// is cleared first, so every test starts as a first visit.
 async function open(query = '') {
-  await new Promise((ok) => { frame.onload = ok; frame.src = `../index.html${query}`; });
+  try { localStorage.removeItem('lang'); } catch {}
+  await new Promise((ok) => { frame.onload = ok; frame.src = `../${dir}index.html${query}`; });
   const w = frame.contentWindow, d = frame.contentDocument;
   const errors = [];
   w.addEventListener('error', (e) => errors.push(e.message));
   w.addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
-  await until(() => !/Loading/.test(d.getElementById('count').textContent), 'the page to load');
+  const T = JSON.parse(d.getElementById('strings').textContent);
+  await until(() => d.getElementById('count').textContent !== T.js.loading, 'the page to load');
   return {
-    w, d, errors,
-    files: () => [...d.querySelectorAll('#cards a.get')].map((a) => a.getAttribute('href')),
+    w, d, errors, T,
+    // Links are relative to the page; tests compare paths from the site root.
+    files: () => [...d.querySelectorAll('#cards a.get')]
+      .map((a) => a.getAttribute('href').replace(/^(\.{1,2}\/)+/, '')),
     picked: (name) => d.querySelector(`input[name=${name}]:checked`)?.value,
     kinds: () => [...d.querySelectorAll('input[name=kind]:checked')].map((i) => i.value),
     query: () => Object.fromEntries(new URLSearchParams(w.location.search)),
-    click: (selector) => d.querySelector(selector).click(),
     // Buttons are found by what they say, as a visitor finds them, so a test
     // does not depend on an id the page is free to change.
     press: (label) => {
@@ -76,6 +91,7 @@ const same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].s
 const layoutOf = (file) => Object.keys(LAYOUTS).concat('chess-all-layouts')
   .sort((a, b) => b.length - a.length).find((l) => file.startsWith(`pdf/${l}-`));
 const ALL_KINDS = [...new Set(Object.values(FACETS).map((f) => f.kind)), 'all'];
+const pageUrl = (code, root) => code === root ? BASE : `${BASE}${code}/`;
 
 const TESTS = [
   {
@@ -91,13 +107,15 @@ const TESTS = [
     },
   },
   {
-    name: 'Every layout has a checkbox, so none can be filtered out of reach',
-    why: 'A new layout needs a kind in FACETS and a label in the page’s KINDS.',
+    name: 'Every layout has a checkbox and a title, so none is filtered out of reach or left unnamed',
+    why: 'A new layout needs a kind in FACETS, and a kind label and a title in every language file.',
     async run() {
       for (const l of Object.keys(LAYOUTS)) check(FACETS[l], `${l} has no FACETS entry`);
       const p = await open();
       const boxes = [...p.d.querySelectorAll('input[name=kind]')].map((i) => i.value);
       check(same(boxes, ALL_KINDS), `checkboxes ${boxes}, kinds ${ALL_KINDS}`);
+      const untitled = Object.keys(LAYOUTS).filter((l) => !p.T.titles[l]);
+      check(!untitled.length, `no ${p.T.lang} title for ${untitled.join(', ')}`);
       return p;
     },
   },
@@ -119,17 +137,21 @@ const TESTS = [
     },
   },
   {
-    name: 'Every file in the catalog, and every preview, is actually served',
+    name: 'Every file in the catalog, every preview and every share image is actually served',
     why: 'A renamed PDF or preview leaves a card whose link is dead.',
+    once: true,
     async run() {
+      const p = await open();
       const paths = catalog.map((c) => c.file)
-        .concat(Object.keys(LAYOUTS).map((l) => `previews/${l}.png`));
+        .concat(Object.keys(LAYOUTS).map((l) => `previews/${l}.png`))
+        .concat(p.T.langs.map((l, i) => `previews/social${i ? `-${l.code}` : ''}.png`));
       const dead = [];
       await Promise.all(paths.map(async (path) => {
         const r = await fetch(`../${path}`, { method: 'HEAD' });
         if (!r.ok) dead.push(`${path} (${r.status})`);
       }));
       check(!dead.length, `not served: ${dead.join(', ')}`);
+      return p;
     },
   },
   {
@@ -140,8 +162,7 @@ const TESTS = [
       for (const side of ['left', 'right']) {
         p.choose('side', side);
         for (const f of p.files()) {
-          const l = layoutOf(f);
-          const s = FACETS[l]?.side;
+          const s = FACETS[layoutOf(f)]?.side;
           check(!s || s === side, `${f} shown under ${side}`);
         }
         const layouts = p.files().map(layoutOf);
@@ -181,7 +202,7 @@ const TESTS = [
     why: 'It once did nothing: its id shadowed form.reset(), and the click threw.',
     async run() {
       const p = await open('?layout=one-board&side=right&view=black-view&size=a4');
-      p.press('Reset filters');
+      p.press(p.T.js.reset);
       check(same(p.kinds(), ALL_KINDS), `layouts after reset: ${p.kinds()}`);
       for (const [k, v] of Object.entries(DEFAULTS)) {
         check(p.picked(k) === v, `${k} is ${p.picked(k)} after reset`);
@@ -196,10 +217,10 @@ const TESTS = [
     why: 'They are the quick way back from a narrow selection.',
     async run() {
       const p = await open();
-      p.press('None');
+      p.press(p.T.js.none);
       check(!p.kinds().length && !p.files().length, 'None left something selected');
       check(p.d.getElementById('zip').disabled, 'zip enabled with nothing to zip');
-      p.press('All');
+      p.press(p.T.js.all);
       check(same(p.kinds(), ALL_KINDS), `All ticked: ${p.kinds()}`);
       return p;
     },
@@ -211,12 +232,14 @@ const TESTS = [
       const notice = (p) => !p.d.getElementById('cornell').hidden;
       const cases = { 'one-board,scoresheet': false, 'cornell-dots': true,
                       'cornell-crosshairs': true, 'all': true };
+      let p;
       for (const [layout, shown] of Object.entries(cases)) {
-        const p = await open(`?layout=${layout}`);
+        p = await open(`?layout=${layout}`);
         check(notice(p) === shown, `notice ${notice(p) ? 'shown' : 'hidden'} for ${layout}`);
-        check(/not affiliated/.test(p.d.getElementById('cornell').textContent), 'disclaimer text missing');
+        check(/Cornell/.test(p.d.getElementById('cornell').textContent), 'notice text missing');
         check(!p.errors.length, p.errors.join('; '));
       }
+      return p;
     },
   },
   {
@@ -228,8 +251,9 @@ const TESTS = [
       p.w.URL.createObjectURL = (b) => { blob = b; return 'about:blank'; };
       p.w.HTMLAnchorElement.prototype.click = () => {};   // no real download
       const expected = p.files();
-      p.press('Download as zip');
-      await until(() => blob || /could not/.test(p.d.getElementById('count').textContent), 'the zip', 30000);
+      p.press(p.T.js.zip);
+      await until(() => blob || p.d.getElementById('count').textContent === p.T.js.zip_failed,
+                  'the zip', 30000);
       check(blob, p.d.getElementById('count').textContent);
       const names = Object.keys((await new p.w.JSZip().loadAsync(blob)).files)
         .filter((n) => !n.endsWith('/'));   // folders are entries too
@@ -238,56 +262,124 @@ const TESTS = [
     },
   },
   {
-    name: 'Search and sharing tags point at the live page and resolve',
+    name: 'The page names its language, its own address and every other language’s',
+    why: 'Search engines show each language to its own readers only if the pages say which is which.',
+    async run() {
+      const p = await open();
+      const root = p.T.langs[0].code;
+      check(p.d.documentElement.lang === p.T.lang, `html lang is ${p.d.documentElement.lang}`);
+      const canonical = p.d.querySelector('link[rel=canonical]')?.href;
+      check(canonical === pageUrl(p.T.lang, root), `canonical is ${canonical}`);
+      const alternates = Object.fromEntries([...p.d.querySelectorAll('link[rel=alternate][hreflang]')]
+        .map((l) => [l.hreflang, l.href]));
+      for (const { code } of p.T.langs) {
+        check(alternates[code] === pageUrl(code, root), `hreflang ${code} is ${alternates[code]}`);
+      }
+      check(alternates['x-default'] === BASE, `x-default is ${alternates['x-default']}`);
+      check(!p.d.documentElement.outerHTML.includes('{{'), 'an unfilled placeholder is left');
+      return p;
+    },
+  },
+  {
+    name: 'Search and sharing tags point at this language’s page and resolve',
     why: 'A wrong canonical or a missing preview image fails silently, outside the page.',
     async run() {
       const p = await open();
-      const URL = 'https://fcardinaux.github.io/study-templates/';
-      const canonical = p.d.querySelector('link[rel=canonical]')?.href;
-      check(canonical === URL, `canonical is ${canonical}`);
       const image = p.d.querySelector('meta[property="og:image"]')?.content ?? '';
-      check(image.startsWith(URL), `og:image is ${image}`);
-      const r = await fetch(`../${image.slice(URL.length)}`, { method: 'HEAD' });
+      check(image.startsWith(BASE), `og:image is ${image}`);
+      const r = await fetch(`../${image.slice(BASE.length)}`, { method: 'HEAD' });
       check(r.ok, `og:image not served (${r.status})`);
+      const og = p.d.querySelector('meta[property="og:url"]')?.content;
+      check(og === pageUrl(p.T.lang, p.T.langs[0].code), `og:url is ${og}`);
       JSON.parse(p.d.querySelector('script[type="application/ld+json"]').textContent);
       return p;
     },
   },
+  {
+    name: 'The language switch lists every language, marks this one, and keeps the filters',
+    why: 'Changing language must not throw away a selection.',
+    async run() {
+      const q = '?layout=cornell-dots&side=right&view=black-view&size=letter';
+      const p = await open(q);
+      const links = [...p.d.querySelectorAll('.langs a')];
+      check(same(links.map((a) => a.hreflang), p.T.langs.map((l) => l.code)),
+        `switch lists ${links.map((a) => a.hreflang)}`);
+      const current = links.filter((a) => a.getAttribute('aria-current') === 'page');
+      check(current.length === 1 && current[0].hreflang === p.T.lang, 'this language is not marked');
+      for (const a of links) {
+        const url = new URL(a.href);
+        const target = a.hreflang === p.T.langs[0].code ? '' : `${a.hreflang}/`;
+        check(url.pathname.endsWith(`/${target}`), `${a.hreflang} links to ${url.pathname}`);
+        check(url.search === q, `${a.hreflang} link carries ${url.search}`);
+      }
+      return p;
+    },
+  },
+  {
+    name: 'The page offers the browser’s language without redirecting, and stops once answered',
+    why: 'A reader should find their language; a choice once made should not be asked again.',
+    async run() {
+      const p = await open();
+      const have = p.T.langs.map((l) => l.code);
+      const want = [...p.w.navigator.languages].map((l) => l.slice(0, 2)).find((c) => have.includes(c));
+      const offer = p.d.getElementById('offer');
+      check(p.w.location.pathname.endsWith(`/${dir}index.html`), 'the page redirected');
+      if (!want || want === p.T.lang) {
+        check(offer.hidden, `offer shown on the ${p.T.lang} page for ${want}`);
+        return p;
+      }
+      check(!offer.hidden, `no offer of ${want} on the ${p.T.lang} page`);
+      const link = offer.querySelector('a');
+      check(link.textContent === p.T.langs.find((l) => l.code === want).offer, `offer reads "${link.textContent}"`);
+      offer.querySelector('button').click();
+      check(offer.hidden, 'closing did not hide the offer');
+      // Reload without clearing the choice: the offer must stay away.
+      await new Promise((ok) => { frame.onload = ok; frame.contentWindow.location.reload(); });
+      const d = frame.contentDocument;
+      await until(() => d.getElementById('count')?.textContent !== p.T.js.loading, 'the reload');
+      check(d.getElementById('offer').hidden, 'offer came back after closing');
+    },
+  },
 ];
 
-// tests/run.sh serves this page and listens for results at /__report, one line
-// per test as it finishes, so a run that hangs still shows how far it got. Opened
-// from any other server the report has nowhere to go, which is fine.
-const report = (line) =>
-  fetch('/__report', { method: 'POST', body: line }).catch(() => {});
-
 const list = document.getElementById('results');
-let failed = 0;
-for (const t of TESTS) {
-  report(`START ${t.name}`);
-  const li = document.createElement('li');
-  try {
-    const p = await t.run();
-    if (p) check(!p.errors.length, `the page threw: ${p.errors.join('; ')}`);
-    li.className = 'pass';
-    li.innerHTML = `<b>PASS</b> `;
-  } catch (e) {
-    failed++;
-    li.className = 'fail';
-    li.innerHTML = `<b>FAIL</b> `;
-    li.dataset.reason = e.message;
+let failed = 0, ran = 0;
+// The languages, in order, as the root page lists them for its own scripts.
+const first = JSON.parse((await (await fetch('../index.html')).text())
+  .match(/<script type="application\/json" id="strings">(.*?)<\/script>/s)[1]);
+const LANGS = first.langs.map((l) => l.code);
+
+for (const [i, code] of LANGS.entries()) {
+  dir = i ? `${code}/` : '';
+  for (const t of TESTS) {
+    if (t.once && i) continue;
+    const name = t.once ? t.name : `[${code}] ${t.name}`;
+    report(`START ${name}`);
+    ran++;
+    const li = document.createElement('li');
+    try {
+      const p = await t.run();
+      if (p) check(!p.errors.length, `the page threw: ${p.errors.join('; ')}`);
+      li.className = 'pass';
+      li.innerHTML = `<b>PASS</b> `;
+    } catch (e) {
+      failed++;
+      li.className = 'fail';
+      li.innerHTML = `<b>FAIL</b> `;
+      li.dataset.reason = e.message;
+    }
+    li.append(name);
+    if (li.dataset.reason) li.append(` — ${li.dataset.reason}`);
+    const why = document.createElement('div');
+    why.className = 'why';
+    why.textContent = t.why;
+    li.appendChild(why);
+    list.appendChild(li);
+    await report(`${li.className.toUpperCase()} ${name}`
+      + (li.dataset.reason ? ` — ${li.dataset.reason}` : ''));
   }
-  li.append(t.name);
-  if (li.dataset.reason) li.append(` — ${li.dataset.reason}`);
-  const why = document.createElement('div');
-  why.className = 'why';
-  why.textContent = t.why;
-  li.appendChild(why);
-  list.appendChild(li);
-  await report(`${li.className.toUpperCase()} ${t.name}`
-    + (li.dataset.reason ? ` — ${li.dataset.reason}` : ''));
 }
-const summary = `DONE ${TESTS.length - failed} passed, ${failed} failed`;
+const summary = `DONE ${ran - failed} passed, ${failed} failed`;
 document.getElementById('summary').textContent = summary;
 await report(summary);
 </script>

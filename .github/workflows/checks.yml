@@ -1,0 +1,31 @@
+# Runs tools/check.sh — the "Before you commit" checks in CLAUDE.md — on every
+# push and pull request. On macOS, because the QR check decodes through Vision,
+# the build makes its previews with qlmanage, and the board labels use the
+# system fonts the committed PDFs were made with. Free for a public repository.
+name: Checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # The files as committed: what the README links to and Pages serves.
+      - name: Check the committed files
+        run: tools/check.sh
+
+      # Then rebuild twice and check again. The runner's Chrome may differ from
+      # the one that made the committed PDFs, so the builds are compared with
+      # each other, not with the commit.
+      - name: Rebuild twice and check what was built
+        run: tools/check.sh --build

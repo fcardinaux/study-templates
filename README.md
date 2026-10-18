@@ -8,6 +8,7 @@ whole set as one file. Drop one in as a page background and annotate it, or
 print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
+[![Checks](https://github.com/fcardinaux/study-templates/actions/workflows/checks.yml/badge.svg)](https://github.com/fcardinaux/study-templates/actions/workflows/checks.yml)
 
 **[Browse and filter them](https://fcardinaux.github.io/study-templates/)** — pick a
 layout, a board view and a page size, and download just those.
@@ -269,6 +270,7 @@ which serves the sources locally because browsers will not load ES modules over
 | `src/render.html` | Draws one template, or all of them, at a given view and page size |
 | `index.html` | The download page, which filters `catalog.json` — a list of the PDFs the build writes |
 | `tests/` | Tests for the download page: `tests/run.sh` runs them in headless Chrome |
+| `tools/check.sh` | Every check, from vector-only PDFs to a decodable QR code; GitHub runs it on each push |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.

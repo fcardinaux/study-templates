@@ -255,9 +255,16 @@ const TESTS = [
   },
 ];
 
+// tests/run.sh serves this page and listens for results at /__report, one line
+// per test as it finishes, so a run that hangs still shows how far it got. Opened
+// from any other server the report has nowhere to go, which is fine.
+const report = (line) =>
+  fetch('/__report', { method: 'POST', body: line }).catch(() => {});
+
 const list = document.getElementById('results');
 let failed = 0;
 for (const t of TESTS) {
+  report(`START ${t.name}`);
   const li = document.createElement('li');
   try {
     const p = await t.run();
@@ -277,9 +284,12 @@ for (const t of TESTS) {
   why.textContent = t.why;
   li.appendChild(why);
   list.appendChild(li);
+  await report(`${li.className.toUpperCase()} ${t.name}`
+    + (li.dataset.reason ? ` — ${li.dataset.reason}` : ''));
 }
-document.getElementById('summary').textContent =
-  `DONE ${TESTS.length - failed} passed, ${failed} failed`;
+const summary = `DONE ${TESTS.length - failed} passed, ${failed} failed`;
+document.getElementById('summary').textContent = summary;
+await report(summary);
 </script>
 </body>
 </html>

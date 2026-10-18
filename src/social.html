@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Social card</title>
+<!-- The image shown when the download page is shared, rendered by build.sh at
+     1200x630 — the size link previews expect. It reuses the layout previews,
+     so it follows the templates without being edited by hand. -->
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #f3f2ee;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #1d1d1b;
+    display: flex; align-items: center;
+  }
+  .text { width: 470px; padding-left: 72px; }
+  h1 { font-size: 64px; line-height: 1.02; margin: 0 0 24px; letter-spacing: -1px; }
+  p { font-size: 27px; line-height: 1.35; margin: 0 0 18px; color: #4a4a45; }
+  .url { font-size: 22px; color: #2f5d50; font-weight: bold; margin-top: 28px; }
+  .pages { position: relative; flex: 1; height: 630px; }
+  .pages img {
+    position: absolute; width: 270px; background: #fff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+</style>
+</head>
+<body>
+  <div class="text">
+    <h1>Chess Study Templates</h1>
+    <p>Blank boards with room to write. Free PDFs for tablet note apps and print.</p>
+    <p class="url">fcardinaux.github.io/study-templates</p>
+  </div>
+  <div class="pages">
+    <img src="../previews/chess-3-boards-alternate.png" style="left: 20px; top: 70px; transform: rotate(-4deg);">
+    <img src="../previews/chess-cornell-dots.png" style="left: 330px; top: 140px; transform: rotate(3deg);">
+    <img src="../previews/chess-1-board-top-left.png" style="left: 180px; top: 30px;">
+  </div>
+</body>
+</html>

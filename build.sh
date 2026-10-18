@@ -132,4 +132,12 @@ for t in "${TEMPLATES[@]}"; do
   qlmanage -t -s 1000 -o previews "pdf/${t}-no-coords-a4.pdf" >/dev/null 2>&1
   mv "previews/${t}-no-coords-a4.pdf.png" "previews/${t}.png"
 done
+
+# The image a link to the download page shows when shared, made from the
+# previews above, at the 1200x630 that link previews expect.
+echo "Refreshing social card"
+"$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
+  --user-data-dir="$PROFILE" --virtual-time-budget=4000 \
+  --window-size=1200,630 --screenshot=previews/social.png \
+  "http://127.0.0.1:$PORT/src/social.html" >/dev/null 2>&1
 echo "Done."

@@ -3,8 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chess Study Templates</title>
-<meta name="description" content="Printable and importable chess study templates: blank boards with room to write. Pick a layout, a board view and a page size, and download the PDFs.">
+<title>Chess Study Templates: free PDF boards with room for notes</title>
+<meta name="description" content="Free chess study templates: blank boards with ruled lines, Cornell notes or a scoresheet. Vector PDFs for tablet note apps and print, in 3:4, A4 and US Letter, white or black view.">
+<!-- Filtered views carry their choices in the address, so every one of them
+     names this as the page, rather than competing with it in search results. -->
+<link rel="canonical" href="https://fcardinaux.github.io/study-templates/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Chess Study Templates">
+<meta property="og:title" content="Chess Study Templates">
+<meta property="og:description" content="Blank boards with room to write. Free PDFs for tablet note apps and print.">
+<meta property="og:url" content="https://fcardinaux.github.io/study-templates/">
+<meta property="og:image" content="https://fcardinaux.github.io/study-templates/previews/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Three chess study templates: boards with ruled lines and a dot grid">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Chess Study Templates",
+  "description": "Blank chess boards paired with room to write: ruled lines, Cornell notes and a scoresheet, as vector PDFs in 3:4, A4 and US Letter.",
+  "url": "https://fcardinaux.github.io/study-templates/",
+  "image": "https://fcardinaux.github.io/study-templates/previews/social.png",
+  "author": { "@type": "Person", "name": "François Cardinaux", "url": "https://github.com/fcardinaux" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "encodingFormat": "application/pdf",
+  "inLanguage": "en"
+}
+</script>
 <style>
   :root {
     --bg: #fafaf8;
@@ -113,7 +141,15 @@
   .meta { font-size: 0.82rem; color: var(--muted); }
   .body a.get { margin-top: auto; padding-top: 6px; font-weight: 600; font-size: 0.9rem; }
 
-  .empty { color: var(--muted); padding: 24px 0; }
+  .notice {
+    font-size: 0.85rem; color: var(--muted);
+    border-left: 3px solid var(--line); padding: 2px 0 2px 12px; margin: 0 0 16px;
+  }
+  .notice[hidden] { display: none; }
+  .about { margin-top: 56px; border-top: 1px solid var(--line); padding-top: 8px; }
+  .about h2 { font-size: 1.35rem; margin: 24px 0 8px; }
+  .about h3 { font-size: 1rem; margin: 20px 0 4px; }
+  .about p { margin: 0 0 8px; max-width: 46em; }
   footer { margin-top: 48px; font-size: 0.85rem; color: var(--muted); }
   footer p { max-width: 46em; }
 </style>
@@ -166,9 +202,50 @@
         <p id="count" aria-live="polite">Loading…</p>
         <button type="button" class="zip" id="zip" disabled>Download as zip</button>
       </div>
+      <p class="notice" id="cornell" hidden>The Cornell pages follow the Cornell note-taking
+      method — cue column, note-taking area, summary — developed by Walter Pauk at
+      Cornell University in the 1950s, used here on its merits as a note-taking
+      structure. These templates are not affiliated with, endorsed by, or connected
+      to Cornell University.</p>
       <ul class="cards" id="cards"></ul>
+      <noscript><p>The file picker needs JavaScript. Every PDF is also listed on the
+      <a href="https://github.com/fcardinaux/study-templates">project page</a>.</p></noscript>
     </main>
   </div>
+
+  <section class="about">
+    <h2>The layouts</h2>
+    <p>Each template is a single-page PDF, in three board views — white view (a1
+    bottom-left), black view (h8 bottom-left) and no coordinates — and three page
+    sizes: 3:4 for a tablet note app, A4 and US Letter for paper. Every layout with
+    a side to it also comes as a mirror image.</p>
+
+    <h3>One board, notes below</h3>
+    <p>A single board in a top corner, ruled lines beside it, and the rest of the
+    page ruled edge to edge. The most writing space of the set, for annotating one
+    position in depth: a game you are reviewing, a tactic you missed, an endgame
+    you want to reason through.</p>
+
+    <h3>Three boards, stacked</h3>
+    <p>Three boards down one side of the page, each with its own block of ruled
+    lines. Suits three related positions: an opening line at three branch points,
+    or three puzzles in a row.</p>
+
+    <h3>Three boards, alternating</h3>
+    <p>The same three boards, zig-zagging from side to side, so each position stands
+    apart from its neighbours — for separate items you will scan back through later.</p>
+
+    <h3>Cornell notes, dot grid or crosshair grid</h3>
+    <p>The Cornell note-taking layout adapted for chess: a narrow cue column for
+    questions and keywords, the board at the head of the note column, and a summary
+    band at the foot. One grid runs across the whole page and the board's squares
+    are exactly one grid cell, so the grid, the rules and the board all line up.</p>
+
+    <h3>Scoresheet</h3>
+    <p>For recording a game: two columns of numbered move rows and a board at the
+    foot of each, big enough to write a position into. The move numbers print only
+    their last digit, so one sheet serves any stretch of a game.</p>
+  </section>
 
   <footer>
     <p>Everything is drawn as vector, so boards and grids stay sharp at any zoom. When
@@ -292,6 +369,8 @@ function render() {
   writeUrl(state);
   shown = select(state);
   cards.replaceChildren(...shown.map(card));
+  document.getElementById('cornell').hidden =
+    !shown.some((f) => f.kind === 'all' || f.kind.startsWith('cornell'));
   const total = shown.reduce((n, f) => n + f.bytes, 0);
   count.textContent = shown.length
     ? `${shown.length} file${shown.length === 1 ? '' : 's'}, ${kb(total)}`

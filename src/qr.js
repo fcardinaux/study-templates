@@ -3,7 +3,8 @@
 // Generated with segno (version 4, error correction Q) and
 // verified by decoding the rendered image back to the URL. It is checked in as a
 // matrix rather than generated at build time because the URL does not change;
-// see CLAUDE.md if the page ever moves.
+// if the page ever moves, remake it with segno.make(url, error='m') and check it
+// with tools/decode-qr.swift.
 //
 // One string per row, '1' for a dark module. 33x33, no quiet zone.
 export const QR = [

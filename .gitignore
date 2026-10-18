@@ -8,3 +8,6 @@
 .vscode/
 .idea/
 *.swp
+
+# The AI assistant's instructions and todo, kept on the owner's machine
+.claude/

@@ -1,4 +1,4 @@
-# Runs tools/check.sh — the "Before you commit" checks in CLAUDE.md — on every
+# Runs tools/check.sh — the checks to run before every commit — on every
 # push and pull request. On macOS, because the QR check decodes through Vision,
 # the build makes its previews with qlmanage, and the board labels use the
 # system fonts the committed PDFs were made with. Free for a public repository.

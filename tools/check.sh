@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The checks from "Before you commit" in CLAUDE.md, as one script, so that a
+# The checks to run before every commit, as one script, so that a
 # person and CI run the same commands. Each check has caught a real regression.
 #
 #   tools/check.sh           check the files as they are

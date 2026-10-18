@@ -59,7 +59,7 @@ done
 
 mkdir -p pdf
 PROFILE=$(mktemp -d)
-trap '{ kill $SERVER; wait $SERVER; } 2>/dev/null || true; rm -rf "$PROFILE"' EXIT
+trap '{ kill $SERVER; wait $SERVER; } 2>/dev/null || true; rm -rf "$PROFILE" 2>/dev/null || true' EXIT
 
 # <template> <view> <width> <height> <page size> <output file>. The page size is
 # passed through so the PDF can title itself the way its filename reads.

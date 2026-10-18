@@ -41,7 +41,14 @@ http.server.ThreadingHTTPServer(('127.0.0.1', port), Handler).serve_forever()
 SERVER
 SERVER=$!
 CHROME_PID=
-trap '{ kill $SERVER ${CHROME_PID:-}; wait $SERVER ${CHROME_PID:-}; } 2>/dev/null || true; rm -rf "$WORK"' EXIT
+# Clean-up must not decide the result: under `set -e` a failing command in an
+# EXIT trap becomes the script's exit status, and on CI Chrome's helpers can
+# still be writing to the profile when it is removed, failing a passing run.
+cleanup() {
+  { kill $SERVER ${CHROME_PID:-}; wait $SERVER ${CHROME_PID:-}; } 2>/dev/null || true
+  rm -rf "$WORK" 2>/dev/null || true
+}
+trap cleanup EXIT
 for _ in $(seq 40); do
   curl -sf "http://127.0.0.1:$PORT/tests/page.html" >/dev/null && break
   sleep 0.1

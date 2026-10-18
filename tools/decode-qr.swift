@@ -5,7 +5,7 @@
 //        --out /tmp/page.png
 //   swiftc -O tools/decode-qr.swift -o /tmp/decode && /tmp/decode /tmp/page.png
 //
-// The payload must come back as the full repository URL. Build it outside the
+// The payload must come back as the full download-page URL. Build it outside the
 // repository, as above: the binary is not meant to be committed.
 
 import Foundation

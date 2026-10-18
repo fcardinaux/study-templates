@@ -1,103 +1,103 @@
 [
  {
   "file": "pdf/chess-1-board-top-left-black-view-3x4.pdf",
-  "bytes": 20246
+  "bytes": 20238
  },
  {
   "file": "pdf/chess-1-board-top-left-black-view-a4.pdf",
-  "bytes": 18210
+  "bytes": 18216
  },
  {
   "file": "pdf/chess-1-board-top-left-black-view-letter.pdf",
-  "bytes": 20203
+  "bytes": 20195
  },
  {
   "file": "pdf/chess-1-board-top-left-no-coords-3x4.pdf",
-  "bytes": 7206
+  "bytes": 7198
  },
  {
   "file": "pdf/chess-1-board-top-left-no-coords-a4.pdf",
-  "bytes": 5187
+  "bytes": 5194
  },
  {
   "file": "pdf/chess-1-board-top-left-no-coords-letter.pdf",
-  "bytes": 7159
+  "bytes": 7155
  },
  {
   "file": "pdf/chess-1-board-top-left-white-view-3x4.pdf",
-  "bytes": 20247
+  "bytes": 20240
  },
  {
   "file": "pdf/chess-1-board-top-left-white-view-a4.pdf",
-  "bytes": 18208
+  "bytes": 18219
  },
  {
   "file": "pdf/chess-1-board-top-left-white-view-letter.pdf",
-  "bytes": 20201
+  "bytes": 20195
  },
  {
   "file": "pdf/chess-1-board-top-right-black-view-3x4.pdf",
-  "bytes": 20284
+  "bytes": 20275
  },
  {
   "file": "pdf/chess-1-board-top-right-black-view-a4.pdf",
-  "bytes": 18243
+  "bytes": 18252
  },
  {
   "file": "pdf/chess-1-board-top-right-black-view-letter.pdf",
-  "bytes": 20237
+  "bytes": 20229
  },
  {
   "file": "pdf/chess-1-board-top-right-no-coords-3x4.pdf",
-  "bytes": 7243
+  "bytes": 7236
  },
  {
   "file": "pdf/chess-1-board-top-right-no-coords-a4.pdf",
-  "bytes": 5223
+  "bytes": 5229
  },
  {
   "file": "pdf/chess-1-board-top-right-no-coords-letter.pdf",
-  "bytes": 7193
+  "bytes": 7189
  },
  {
   "file": "pdf/chess-1-board-top-right-white-view-3x4.pdf",
-  "bytes": 20284
+  "bytes": 20276
  },
  {
   "file": "pdf/chess-1-board-top-right-white-view-a4.pdf",
-  "bytes": 18241
+  "bytes": 18252
  },
  {
   "file": "pdf/chess-1-board-top-right-white-view-letter.pdf",
-  "bytes": 20234
+  "bytes": 20228
  },
  {
   "file": "pdf/chess-3-boards-alternate-black-view-3x4.pdf",
-  "bytes": 34408
+  "bytes": 34401
  },
  {
   "file": "pdf/chess-3-boards-alternate-black-view-a4.pdf",
-  "bytes": 32180
+  "bytes": 32191
  },
  {
   "file": "pdf/chess-3-boards-alternate-black-view-letter.pdf",
-  "bytes": 34266
+  "bytes": 34264
  },
  {
   "file": "pdf/chess-3-boards-alternate-no-coords-3x4.pdf",
-  "bytes": 7492
+  "bytes": 7489
  },
  {
   "file": "pdf/chess-3-boards-alternate-no-coords-a4.pdf",
-  "bytes": 5332
+  "bytes": 5341
  },
  {
   "file": "pdf/chess-3-boards-alternate-no-coords-letter.pdf",
-  "bytes": 7354
+  "bytes": 7351
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-black-view-3x4.pdf",
-  "bytes": 34117
+  "bytes": 34113
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-black-view-a4.pdf",
@@ -105,91 +105,91 @@
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-black-view-letter.pdf",
-  "bytes": 34185
+  "bytes": 34178
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-no-coords-3x4.pdf",
-  "bytes": 7202
+  "bytes": 7201
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-no-coords-a4.pdf",
-  "bytes": 7385
+  "bytes": 7389
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-no-coords-letter.pdf",
-  "bytes": 7298
+  "bytes": 7293
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-white-view-3x4.pdf",
-  "bytes": 34111
+  "bytes": 34107
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-white-view-a4.pdf",
-  "bytes": 34307
+  "bytes": 34308
  },
  {
   "file": "pdf/chess-3-boards-alternate-right-first-white-view-letter.pdf",
-  "bytes": 34184
+  "bytes": 34176
  },
  {
   "file": "pdf/chess-3-boards-alternate-white-view-3x4.pdf",
-  "bytes": 34407
+  "bytes": 34399
  },
  {
   "file": "pdf/chess-3-boards-alternate-white-view-a4.pdf",
-  "bytes": 32179
+  "bytes": 32191
  },
  {
   "file": "pdf/chess-3-boards-alternate-white-view-letter.pdf",
-  "bytes": 34267
+  "bytes": 34264
  },
  {
   "file": "pdf/chess-3-boards-left-black-view-3x4.pdf",
-  "bytes": 34383
+  "bytes": 34376
  },
  {
   "file": "pdf/chess-3-boards-left-black-view-a4.pdf",
-  "bytes": 32166
+  "bytes": 32177
  },
  {
   "file": "pdf/chess-3-boards-left-black-view-letter.pdf",
-  "bytes": 34245
+  "bytes": 34243
  },
  {
   "file": "pdf/chess-3-boards-left-no-coords-3x4.pdf",
-  "bytes": 7477
+  "bytes": 7473
  },
  {
   "file": "pdf/chess-3-boards-left-no-coords-a4.pdf",
-  "bytes": 5319
+  "bytes": 5327
  },
  {
   "file": "pdf/chess-3-boards-left-no-coords-letter.pdf",
-  "bytes": 7340
+  "bytes": 7336
  },
  {
   "file": "pdf/chess-3-boards-left-white-view-3x4.pdf",
-  "bytes": 34383
+  "bytes": 34375
  },
  {
   "file": "pdf/chess-3-boards-left-white-view-a4.pdf",
-  "bytes": 32165
+  "bytes": 32177
  },
  {
   "file": "pdf/chess-3-boards-left-white-view-letter.pdf",
-  "bytes": 34246
+  "bytes": 34243
  },
  {
   "file": "pdf/chess-3-boards-right-black-view-3x4.pdf",
-  "bytes": 34035
+  "bytes": 34030
  },
  {
   "file": "pdf/chess-3-boards-right-black-view-a4.pdf",
-  "bytes": 34213
+  "bytes": 34214
  },
  {
   "file": "pdf/chess-3-boards-right-black-view-letter.pdf",
-  "bytes": 34106
+  "bytes": 34099
  },
  {
   "file": "pdf/chess-3-boards-right-no-coords-3x4.pdf",
@@ -197,67 +197,67 @@
  },
  {
   "file": "pdf/chess-3-boards-right-no-coords-a4.pdf",
-  "bytes": 7309
+  "bytes": 7313
  },
  {
   "file": "pdf/chess-3-boards-right-no-coords-letter.pdf",
-  "bytes": 7225
+  "bytes": 7219
  },
  {
   "file": "pdf/chess-3-boards-right-white-view-3x4.pdf",
-  "bytes": 34030
+  "bytes": 34024
  },
  {
   "file": "pdf/chess-3-boards-right-white-view-a4.pdf",
-  "bytes": 34222
+  "bytes": 34223
  },
  {
   "file": "pdf/chess-3-boards-right-white-view-letter.pdf",
-  "bytes": 34105
+  "bytes": 34098
  },
  {
   "file": "pdf/chess-all-layouts-black-view-3x4.pdf",
-  "bytes": 459701
+  "bytes": 459672
  },
  {
   "file": "pdf/chess-all-layouts-black-view-a4.pdf",
-  "bytes": 462536
+  "bytes": 462597
  },
  {
   "file": "pdf/chess-all-layouts-black-view-letter.pdf",
-  "bytes": 449911
+  "bytes": 449872
  },
  {
   "file": "pdf/chess-all-layouts-no-coords-3x4.pdf",
-  "bytes": 306093
+  "bytes": 306067
  },
  {
   "file": "pdf/chess-all-layouts-no-coords-a4.pdf",
-  "bytes": 314642
+  "bytes": 314705
  },
  {
   "file": "pdf/chess-all-layouts-no-coords-letter.pdf",
-  "bytes": 296310
+  "bytes": 296269
  },
  {
   "file": "pdf/chess-all-layouts-white-view-3x4.pdf",
-  "bytes": 459717
+  "bytes": 459690
  },
  {
   "file": "pdf/chess-all-layouts-white-view-a4.pdf",
-  "bytes": 462517
+  "bytes": 462591
  },
  {
   "file": "pdf/chess-all-layouts-white-view-letter.pdf",
-  "bytes": 449923
+  "bytes": 449879
  },
  {
   "file": "pdf/chess-cornell-crosshairs-black-view-3x4.pdf",
-  "bytes": 21415
+  "bytes": 21418
  },
  {
   "file": "pdf/chess-cornell-crosshairs-black-view-a4.pdf",
-  "bytes": 21520
+  "bytes": 21530
  },
  {
   "file": "pdf/chess-cornell-crosshairs-black-view-letter.pdf",
@@ -265,15 +265,15 @@
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-black-view-3x4.pdf",
-  "bytes": 21548
+  "bytes": 21547
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-black-view-a4.pdf",
-  "bytes": 21645
+  "bytes": 21654
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-black-view-letter.pdf",
-  "bytes": 21167
+  "bytes": 21170
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-no-coords-3x4.pdf",
@@ -281,7 +281,7 @@
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-no-coords-a4.pdf",
-  "bytes": 8594
+  "bytes": 8601
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-no-coords-letter.pdf",
@@ -289,11 +289,11 @@
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-white-view-3x4.pdf",
-  "bytes": 21552
+  "bytes": 21554
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-white-view-a4.pdf",
-  "bytes": 21636
+  "bytes": 21645
  },
  {
   "file": "pdf/chess-cornell-crosshairs-cue-right-white-view-letter.pdf",
@@ -301,11 +301,11 @@
  },
  {
   "file": "pdf/chess-cornell-crosshairs-no-coords-3x4.pdf",
-  "bytes": 8394
+  "bytes": 8400
  },
  {
   "file": "pdf/chess-cornell-crosshairs-no-coords-a4.pdf",
-  "bytes": 8465
+  "bytes": 8475
  },
  {
   "file": "pdf/chess-cornell-crosshairs-no-coords-letter.pdf",
@@ -317,7 +317,7 @@
  },
  {
   "file": "pdf/chess-cornell-crosshairs-white-view-a4.pdf",
-  "bytes": 21509
+  "bytes": 21520
  },
  {
   "file": "pdf/chess-cornell-crosshairs-white-view-letter.pdf",
@@ -325,55 +325,55 @@
  },
  {
   "file": "pdf/chess-cornell-dots-black-view-3x4.pdf",
-  "bytes": 125590
+  "bytes": 125589
  },
  {
   "file": "pdf/chess-cornell-dots-black-view-a4.pdf",
-  "bytes": 132902
+  "bytes": 132903
  },
  {
   "file": "pdf/chess-cornell-dots-black-view-letter.pdf",
-  "bytes": 121526
+  "bytes": 121523
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-black-view-3x4.pdf",
-  "bytes": 126886
+  "bytes": 126892
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-black-view-a4.pdf",
-  "bytes": 134016
+  "bytes": 134014
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-black-view-letter.pdf",
-  "bytes": 122299
+  "bytes": 122291
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-no-coords-3x4.pdf",
-  "bytes": 113816
+  "bytes": 113815
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-no-coords-a4.pdf",
-  "bytes": 120978
+  "bytes": 120976
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-no-coords-letter.pdf",
-  "bytes": 109224
+  "bytes": 109217
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-white-view-3x4.pdf",
-  "bytes": 126894
+  "bytes": 126901
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-white-view-a4.pdf",
-  "bytes": 134010
+  "bytes": 134008
  },
  {
   "file": "pdf/chess-cornell-dots-cue-right-white-view-letter.pdf",
-  "bytes": 122303
+  "bytes": 122293
  },
  {
   "file": "pdf/chess-cornell-dots-no-coords-3x4.pdf",
-  "bytes": 112512
+  "bytes": 112507
  },
  {
   "file": "pdf/chess-cornell-dots-no-coords-a4.pdf",
@@ -381,7 +381,7 @@
  },
  {
   "file": "pdf/chess-cornell-dots-no-coords-letter.pdf",
-  "bytes": 108441
+  "bytes": 108438
  },
  {
   "file": "pdf/chess-cornell-dots-white-view-3x4.pdf",
@@ -393,18 +393,18 @@
  },
  {
   "file": "pdf/chess-cornell-dots-white-view-letter.pdf",
-  "bytes": 121526
+  "bytes": 121523
  },
  {
   "file": "pdf/chess-scoresheet-no-coords-3x4.pdf",
-  "bytes": 29930
+  "bytes": 29927
  },
  {
   "file": "pdf/chess-scoresheet-no-coords-a4.pdf",
-  "bytes": 31749
+  "bytes": 31758
  },
  {
   "file": "pdf/chess-scoresheet-no-coords-letter.pdf",
-  "bytes": 29924
+  "bytes": 29922
  }
 ]

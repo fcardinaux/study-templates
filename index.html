@@ -158,6 +158,7 @@
         <label><input type="radio" name="size" value="a4"> A4</label>
         <label><input type="radio" name="size" value="letter"> US Letter</label>
       </fieldset>
+      <div class="quick"><button type="button" id="reset">Reset filters</button></div>
     </form>
 
     <main>
@@ -350,6 +351,12 @@ form.addEventListener('click', (e) => {
   render();
 });
 form.addEventListener('change', render);
+// Every control is created with its default state as its `checked` attribute,
+// so resetting the form is the whole of going back to the defaults.
+document.getElementById('reset').addEventListener('click', () => {
+  form.reset();
+  render();
+});
 zip.addEventListener('click', downloadZip);
 
 try {

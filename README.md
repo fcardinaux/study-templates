@@ -282,11 +282,11 @@ grids ended up as 72 dpi bitmaps on an otherwise vector page.
 ## Share
 
 Every template carries this code in its bottom-right corner, so a page on its own —
-printed, or open in a note app — still leads back here.
+printed, or open in a note app — still leads back to the download page.
 
-<img src="previews/repo-qr.png" width="150" alt="QR code linking to https://github.com/fcardinaux/study-templates">
+<img src="previews/site-qr.png" width="150" alt="QR code linking to https://fcardinaux.github.io/study-templates/">
 
-https://github.com/fcardinaux/study-templates
+https://fcardinaux.github.io/study-templates/ — which links back here.
 
 ## License
 

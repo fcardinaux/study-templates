@@ -4,7 +4,7 @@ Templates for studying chess by hand — blank boards paired with room to write,
 position and the notes about it live on the same page.
 
 Each one is a single-page PDF, in three board views and three page sizes — or take the
-whole set as one six-page file. Drop one in as a page background and annotate it, or
+whole set as one file. Drop one in as a page background and annotate it, or
 print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
@@ -45,6 +45,20 @@ to reason through.
 - **A4** — [white view](pdf/chess-1-board-top-left-white-view-a4.pdf) · [black view](pdf/chess-1-board-top-left-black-view-a4.pdf) · [no coordinates](pdf/chess-1-board-top-left-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-1-board-top-left-white-view-letter.pdf) · [black view](pdf/chess-1-board-top-left-black-view-letter.pdf) · [no coordinates](pdf/chess-1-board-top-left-no-coords-letter.pdf)
 
+### One board top right, notes below
+
+<img src="previews/chess-1-board-top-right.png" width="300" alt="One board in the top-right corner with ruled lines beside and below it">
+
+The mirror image of the page above: the board in the top-right corner and the lines
+beside it on the left, for anyone who would rather have the board on the right.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-1-board-top-right-white-view-3x4.pdf) · [black view](pdf/chess-1-board-top-right-black-view-3x4.pdf) · [no coordinates](pdf/chess-1-board-top-right-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-1-board-top-right-white-view-a4.pdf) · [black view](pdf/chess-1-board-top-right-black-view-a4.pdf) · [no coordinates](pdf/chess-1-board-top-right-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-1-board-top-right-white-view-letter.pdf) · [black view](pdf/chess-1-board-top-right-black-view-letter.pdf) · [no coordinates](pdf/chess-1-board-top-right-no-coords-letter.pdf)
+
+
 ### Three boards, left column
 
 <img src="previews/chess-3-boards-left.png" width="300" alt="Three boards stacked down the left side, each with ruled lines to its right">
@@ -59,6 +73,20 @@ positions: an opening line at three branch points, or three puzzles in a row.
 - **A4** — [white view](pdf/chess-3-boards-left-white-view-a4.pdf) · [black view](pdf/chess-3-boards-left-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-left-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-3-boards-left-white-view-letter.pdf) · [black view](pdf/chess-3-boards-left-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-left-no-coords-letter.pdf)
 
+### Three boards, right column
+
+<img src="previews/chess-3-boards-right.png" width="300" alt="Three boards stacked down the right side, each with ruled lines to its left">
+
+The same three boards stacked down the right margin instead, each with its block of
+ruled lines to its left.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-3-boards-right-white-view-3x4.pdf) · [black view](pdf/chess-3-boards-right-black-view-3x4.pdf) · [no coordinates](pdf/chess-3-boards-right-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-3-boards-right-white-view-a4.pdf) · [black view](pdf/chess-3-boards-right-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-right-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-3-boards-right-white-view-letter.pdf) · [black view](pdf/chess-3-boards-right-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-right-no-coords-letter.pdf)
+
+
 ### Three boards, alternating
 
 <img src="previews/chess-3-boards-alternate.png" width="300" alt="Three boards alternating left, right, left down the page with ruled lines opposite each">
@@ -72,6 +100,19 @@ each position visually distinct from its neighbours, which helps when the three 
 - **3:4** — [white view](pdf/chess-3-boards-alternate-white-view-3x4.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-3x4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-3x4.pdf)
 - **A4** — [white view](pdf/chess-3-boards-alternate-white-view-a4.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-3-boards-alternate-white-view-letter.pdf) · [black view](pdf/chess-3-boards-alternate-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-alternate-no-coords-letter.pdf)
+
+### Three boards, alternating from the right
+
+<img src="previews/chess-3-boards-alternate-right-first.png" width="300" alt="Three boards alternating right, left, right down the page with ruled lines opposite each">
+
+The alternating page started from the other side: right–left–right.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-3-boards-alternate-right-first-white-view-3x4.pdf) · [black view](pdf/chess-3-boards-alternate-right-first-black-view-3x4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-right-first-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-3-boards-alternate-right-first-white-view-a4.pdf) · [black view](pdf/chess-3-boards-alternate-right-first-black-view-a4.pdf) · [no coordinates](pdf/chess-3-boards-alternate-right-first-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-3-boards-alternate-right-first-white-view-letter.pdf) · [black view](pdf/chess-3-boards-alternate-right-first-black-view-letter.pdf) · [no coordinates](pdf/chess-3-boards-alternate-right-first-no-coords-letter.pdf)
+
 
 ### Cornell layout, dot grid
 
@@ -89,6 +130,21 @@ exactly one grid cell — so the dots, the rules and the board all line up.
 - **A4** — [white view](pdf/chess-cornell-dots-white-view-a4.pdf) · [black view](pdf/chess-cornell-dots-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-dots-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-cornell-dots-white-view-letter.pdf) · [black view](pdf/chess-cornell-dots-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-dots-no-coords-letter.pdf)
 
+### Cornell layout, cue column right, dot grid
+
+<img src="previews/chess-cornell-dots-cue-right.png" width="300" alt="Cornell note layout with the cue column on the right, a board at the top of the main column, a dot grid, and a summary band">
+
+The dot-grid Cornell page in mirror image: the cue column on the right, the board
+against the divider on its left. The grid and the board line up exactly as they do
+above.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-cornell-dots-cue-right-white-view-3x4.pdf) · [black view](pdf/chess-cornell-dots-cue-right-black-view-3x4.pdf) · [no coordinates](pdf/chess-cornell-dots-cue-right-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-cornell-dots-cue-right-white-view-a4.pdf) · [black view](pdf/chess-cornell-dots-cue-right-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-dots-cue-right-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-cornell-dots-cue-right-white-view-letter.pdf) · [black view](pdf/chess-cornell-dots-cue-right-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-dots-cue-right-no-coords-letter.pdf)
+
+
 ### Cornell layout, crosshair grid
 
 <img src="previews/chess-cornell-crosshairs.png" width="300" alt="The same Cornell layout with a crosshair tick grid instead of dots">
@@ -102,6 +158,19 @@ to rule a straight line or draw a second board freehand, slightly busier on the 
 - **3:4** — [white view](pdf/chess-cornell-crosshairs-white-view-3x4.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-3x4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-3x4.pdf)
 - **A4** — [white view](pdf/chess-cornell-crosshairs-white-view-a4.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-a4.pdf)
 - **US Letter** — [white view](pdf/chess-cornell-crosshairs-white-view-letter.pdf) · [black view](pdf/chess-cornell-crosshairs-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-no-coords-letter.pdf)
+
+### Cornell layout, cue column right, crosshair grid
+
+<img src="previews/chess-cornell-crosshairs-cue-right.png" width="300" alt="The same right-hand Cornell layout with a crosshair tick grid instead of dots">
+
+The crosshair Cornell page with the cue column on the right.
+
+**Download**
+
+- **3:4** — [white view](pdf/chess-cornell-crosshairs-cue-right-white-view-3x4.pdf) · [black view](pdf/chess-cornell-crosshairs-cue-right-black-view-3x4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-cue-right-no-coords-3x4.pdf)
+- **A4** — [white view](pdf/chess-cornell-crosshairs-cue-right-white-view-a4.pdf) · [black view](pdf/chess-cornell-crosshairs-cue-right-black-view-a4.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-cue-right-no-coords-a4.pdf)
+- **US Letter** — [white view](pdf/chess-cornell-crosshairs-cue-right-white-view-letter.pdf) · [black view](pdf/chess-cornell-crosshairs-cue-right-black-view-letter.pdf) · [no coordinates](pdf/chess-cornell-crosshairs-cue-right-no-coords-letter.pdf)
+
 
 ### Scoresheet
 
@@ -126,10 +195,10 @@ only.
 
 **Download** — [3:4](pdf/chess-scoresheet-no-coords-3x4.pdf) · [A4](pdf/chess-scoresheet-no-coords-a4.pdf) · [US Letter](pdf/chess-scoresheet-no-coords-letter.pdf)
 
-### All six in one file
+### All in one file
 
-Every layout above, in the same order, as a single six-page PDF — one import
-instead of six. These are in addition to the files above, not a replacement: the
+Every layout above, in the same order, as a single eleven-page PDF — one import
+instead of eleven. These are in addition to the files above, not a replacement: the
 single-layout files are still there if you only want one.
 
 **Download**
@@ -164,7 +233,7 @@ squares stop being square, which makes pieces sketched on them look lopsided.
 
 ## About the Cornell layout
 
-Two of these templates follow the Cornell note-taking method — cue column, note-taking
+Four of these templates follow the Cornell note-taking method — cue column, note-taking
 area, summary — developed by Walter Pauk at Cornell University in the 1950s. The method
 is used here on its merits as a note-taking structure.
 
@@ -193,9 +262,9 @@ which serves the sources locally because browsers will not load ES modules over
 | File | What it holds |
 | --- | --- |
 | `src/lib.js` | The board, the ruled lines, the text, and the dot and crosshair grids |
-| `src/layouts.js` | The six page layouts, and every measurement they share |
+| `src/layouts.js` | The page layouts, and every measurement they share |
 | `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
-| `src/render.html` | Draws one template, or all six, at a given view and page size |
+| `src/render.html` | Draws one template, or all of them, at a given view and page size |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.

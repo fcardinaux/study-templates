@@ -18,10 +18,15 @@ PDF_DATE="${PDF_DATE:-D:20260101000000+00'00'}"
 
 TEMPLATES=(
   chess-1-board-top-left
+  chess-1-board-top-right
   chess-3-boards-alternate
+  chess-3-boards-alternate-right-first
   chess-3-boards-left
+  chess-3-boards-right
   chess-cornell-crosshairs
+  chess-cornell-crosshairs-cue-right
   chess-cornell-dots
+  chess-cornell-dots-cue-right
   chess-scoresheet
 )
 
@@ -66,7 +71,7 @@ render() {
     --print-to-pdf="$6" \
     "http://127.0.0.1:$PORT/src/render.html?t=${1}&v=${2}&w=${3}&h=${4}&p=${5}" \
     >/dev/null 2>&1
-  printf '  %-54s %7s bytes\n' "$6" "$(wc -c < "$6" | tr -d ' ')"
+  printf '  %-64s %7s bytes\n' "$6" "$(wc -c < "$6" | tr -d ' ')"
 }
 
 for page in "${PAGES[@]}"; do
@@ -80,7 +85,7 @@ for page in "${PAGES[@]}"; do
       render "$t" "$v" "$w" "$h" "$size" "pdf/${t}-${v}${suffix}.pdf"
     done
   done
-  # Every layout in one five-page file, for importing the set in one go. These
+  # Every layout in one file, a page each, for importing the set in one go. These
   # are an addition to the single-layout files, not a replacement for them.
   for v in "${VIEWS[@]}"; do
     render all "$v" "$w" "$h" "$size" "pdf/chess-all-layouts-${v}${suffix}.pdf"

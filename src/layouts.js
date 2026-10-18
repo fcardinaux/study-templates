@@ -1,4 +1,4 @@
-// The five templates, each a function of the page size in CSS pixels.
+// The templates, each a function of the page size in CSS pixels.
 //
 // Every measurement below is the A4 original, recovered from the first
 // generation of PDFs. Layouts scale to the page width and then fit as many
@@ -80,16 +80,18 @@ function boardRow(nodes, R, x, y, rulesX, rulesWidth, bottom, view, avoid) {
   return n;
 }
 
-// One board top-left, then full-width ruled sections to the foot of the page.
-function oneBoardTopLeft(W, H, view) {
+// One board in a top corner, then full-width ruled sections to the foot of the
+// page. `side` picks the corner; the lines beside the board take the other side.
+function oneBoard(W, H, side, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
   const bottom = H - R.margin;
   const avoid = qrBox(W, H, R);
   const nodes = [];
-  const rulesX = R.margin + R.boardSize + R.gutter;
+  const boardX = side === 'left' ? R.margin : W - R.margin - R.boardSize;
+  const rulesX = side === 'left' ? R.margin + R.boardSize + R.gutter : R.margin;
 
-  boardRow(nodes, R, R.margin, R.top, rulesX, content - R.boardSize - R.gutter,
+  boardRow(nodes, R, boardX, R.top, rulesX, content - R.boardSize - R.gutter,
            bottom, view, avoid);
 
   let cursor = R.top + R.boardSize - s;
@@ -170,28 +172,34 @@ function threeBoards(W, H, sides, view) {
 }
 
 // Cornell layout: cue column, board at the head of the note column, summary band.
+// `cue` puts the cue column on the left or the right; the page is a mirror image
+// either way, with the board against the divider.
 //
 // One lattice spans the whole page, anchored on the crossing of the cue divider
 // and the summary rule, so the grid registers with both. The board's square size
-// is the lattice pitch and its playing area starts one cell right of the divider,
+// is the lattice pitch and its playing area starts one cell clear of the divider,
 // which puts every square corner on a grid point.
-function cornell(W, H, grid, view) {
+function cornell(W, H, cue, grid, view) {
   const s = W / A4.width, R = scaled(s);
   const content = W - 2 * R.margin;
-  const dividerX = R.margin + R.cueWidth;
+  // The divider is drawn `s` wide from its x, so on the right it starts that much
+  // further in to leave the cue column the same width as on the left.
+  const dividerX = cue === 'left' ? R.margin + R.cueWidth
+                                  : W - R.margin - R.cueWidth - s;
   const summaryY = R.summaryRule;
   const bodyBottom = R.cornellTop + R.cornellHeight;
 
   const pitch = (summaryY - R.cornellTop) / (R.gridRows + 8 / 10.5);
   const boardSize = boxForSquare(pitch);
   const gutter = gutterForSquare(pitch);
-  const boardX = dividerX + pitch - gutter;
+  const boardX = cue === 'left' ? dividerX + pitch - gutter
+                                : dividerX - pitch + gutter - boardSize;
   const boardY = R.cornellTop;
 
   // Regions are the space between the rules, not including them, so no grid
   // point lands on the divider or the summary rule.
   const regions = [
-    { x: R.margin, y: R.cornellTop, width: R.cueWidth - s, height: bodyBottom - R.cornellTop },
+    { x: R.margin, y: R.cornellTop, width: dividerX - s - R.margin, height: bodyBottom - R.cornellTop },
     { x: dividerX + s, y: R.cornellTop, width: W - R.margin - dividerX - s, height: bodyBottom - R.cornellTop },
     { x: R.margin, y: summaryY + s, width: content, height: H - R.margin - summaryY - s },
   ];
@@ -305,12 +313,21 @@ function scoresheet(W, H, _view) {
 const dots = (points, pitch) => dotGrid(points, pitch * 0.045);
 const crosshairs = (points, pitch) => crosshairGrid(points, pitch * 0.40, pitch * 0.030);
 
+// Each layout with a side to it comes in a mirror image too, listed right after
+// it, so the order here — which is also the page order of the all-layouts file —
+// keeps each pair together.
 export const LAYOUTS = {
-  'chess-1-board-top-left': oneBoardTopLeft,
+  'chess-1-board-top-left': (W, H, v) => oneBoard(W, H, 'left', v),
+  'chess-1-board-top-right': (W, H, v) => oneBoard(W, H, 'right', v),
   'chess-3-boards-left': (W, H, v) => threeBoards(W, H, ['left', 'left', 'left'], v),
+  'chess-3-boards-right': (W, H, v) => threeBoards(W, H, ['right', 'right', 'right'], v),
   'chess-3-boards-alternate': (W, H, v) => threeBoards(W, H, ['left', 'right', 'left'], v),
-  'chess-cornell-dots': (W, H, v) => cornell(W, H, dots, v),
-  'chess-cornell-crosshairs': (W, H, v) => cornell(W, H, crosshairs, v),
+  'chess-3-boards-alternate-right-first':
+    (W, H, v) => threeBoards(W, H, ['right', 'left', 'right'], v),
+  'chess-cornell-dots': (W, H, v) => cornell(W, H, 'left', dots, v),
+  'chess-cornell-dots-cue-right': (W, H, v) => cornell(W, H, 'right', dots, v),
+  'chess-cornell-crosshairs': (W, H, v) => cornell(W, H, 'left', crosshairs, v),
+  'chess-cornell-crosshairs-cue-right': (W, H, v) => cornell(W, H, 'right', crosshairs, v),
   'chess-scoresheet': scoresheet,
 };
 
@@ -319,10 +336,15 @@ export const LAYOUTS = {
 // in its filename.
 export const TITLES = {
   'chess-1-board-top-left': 'one board, notes below',
+  'chess-1-board-top-right': 'one board top right, notes below',
   'chess-3-boards-left': 'three boards, left column',
+  'chess-3-boards-right': 'three boards, right column',
   'chess-3-boards-alternate': 'three boards, alternating',
+  'chess-3-boards-alternate-right-first': 'three boards, alternating from the right',
   'chess-cornell-dots': 'Cornell layout, dot grid',
+  'chess-cornell-dots-cue-right': 'Cornell layout, cue column right, dot grid',
   'chess-cornell-crosshairs': 'Cornell layout, crosshair grid',
+  'chess-cornell-crosshairs-cue-right': 'Cornell layout, cue column right, crosshair grid',
   'chess-scoresheet': 'scoresheet',
 };
 

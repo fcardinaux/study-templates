@@ -140,6 +140,12 @@ done
 # The image a link to the download page shows when shared, made from the
 # previews above, at the 1200x630 that link previews expect: one per language,
 # English as plain social.png.
+#
+# Chrome rasterises the page in tiles on other threads and may draw a frame
+# before they are all done, so on a busy machine a card now and then came out
+# with a tile of one tilted page missing, and two builds differed. Telling it to
+# finish every compositor stage before drawing makes the screenshot whole every
+# time, however slow the machine; waiting longer would only make it rarer.
 echo "Refreshing social cards"
 LANGS=$(python3 tools/site.py --langs)
 for lang in $LANGS; do
@@ -147,6 +153,7 @@ for lang in $LANGS; do
   [ "$lang" = "${LANGS%% *}" ] || out="previews/social-$lang.png"
   "$CHROME" --headless --disable-gpu --no-sandbox --hide-scrollbars \
     --user-data-dir="$PROFILE" --virtual-time-budget=4000 \
+    --run-all-compositor-stages-before-draw \
     --window-size=1200,630 --screenshot="$out" \
     "http://127.0.0.1:$PORT/src/social.html?lang=$lang" >/dev/null 2>&1
 done

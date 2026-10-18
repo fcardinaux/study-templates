@@ -9,6 +9,8 @@ print it.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
+**[Browse and filter them](https://fcardinaux.github.io/study-templates/)** — pick a
+layout, a board view and a page size, and download just those.
 **[Download the whole set](https://github.com/fcardinaux/study-templates/releases/latest)**
 — every PDF in one archive. Or pick the ones you want below.
 
@@ -265,6 +267,7 @@ which serves the sources locally because browsers will not load ES modules over
 | `src/layouts.js` | The page layouts, and every measurement they share |
 | `src/qr.js` | The module matrix of the QR code, drawn as vector on every page |
 | `src/render.html` | Draws one template, or all of them, at a given view and page size |
+| `index.html` | The download page, which filters `catalog.json` — a list of the PDFs the build writes |
 
 Each layout is a function of the page size, so a page of different proportions keeps
 the same geometry and simply fits however many ruled lines the height allows.

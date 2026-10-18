@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chess Study Templates</title>
+<meta name="description" content="Printable and importable chess study templates: blank boards with room to write. Pick a layout, a board view and a page size, and download the PDFs.">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --panel: #ffffff;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #dddcd6;
+    --accent: #2f5d50;
+    --accent-ink: #ffffff;
+    --thumb: #ffffff;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615;
+      --panel: #1f1f1d;
+      --ink: #ecebe6;
+      --muted: #a09f98;
+      --line: #34332f;
+      --accent: #8cc4b2;
+      --accent-ink: #10201b;
+      --thumb: #f4f4f2;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  header h1 { margin: 0 0 6px; font-size: 1.9rem; letter-spacing: -0.01em; }
+  header p { margin: 0 0 6px; color: var(--muted); max-width: 46em; }
+
+  .layout { display: grid; gap: 28px; margin-top: 28px; }
+  .layout > * { min-width: 0; }
+  @media (min-width: 860px) {
+    .layout { grid-template-columns: 260px 1fr; align-items: start; }
+    form { position: sticky; top: 16px; }
+  }
+
+  form {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 6px 18px 14px;
+  }
+  fieldset { border: 0; margin: 0; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  fieldset:last-of-type { border-bottom: 0; }
+  legend { font-weight: 600; padding: 0; margin-bottom: 6px; }
+  .hint { font-size: 0.85rem; color: var(--muted); margin: -2px 0 6px; }
+  label { display: flex; gap: 8px; align-items: baseline; padding: 3px 0; cursor: pointer; }
+  input { accent-color: var(--accent); }
+  .row { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .quick { font-size: 0.85rem; margin-top: 4px; }
+  .quick button {
+    background: none; border: 0; padding: 0; color: var(--accent);
+    font: inherit; cursor: pointer; text-decoration: underline;
+  }
+
+  .summary {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    justify-content: space-between; margin-bottom: 16px;
+  }
+  .summary p { margin: 0; color: var(--muted); }
+  .zip {
+    background: var(--accent); color: var(--accent-ink);
+    border: 0; border-radius: 8px; padding: 9px 16px;
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .zip:disabled { opacity: 0.5; cursor: default; }
+
+  .cards {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .thumb {
+    display: block;
+    aspect-ratio: 210 / 297;
+    background: var(--thumb);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .badge {
+    position: absolute; right: 8px; top: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 0.75rem; font-weight: 600;
+    border-radius: 999px; padding: 2px 8px;
+  }
+  .body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .body h3 { margin: 0; font-size: 0.95rem; line-height: 1.3; }
+  .meta { font-size: 0.82rem; color: var(--muted); }
+  .body a.get { margin-top: auto; padding-top: 6px; font-weight: 600; font-size: 0.9rem; }
+
+  .empty { color: var(--muted); padding: 24px 0; }
+  footer { margin-top: 48px; font-size: 0.85rem; color: var(--muted); }
+  footer p { max-width: 46em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Chess Study Templates</h1>
+    <p>Blank boards paired with room to write, so a position and the notes about it
+    live on the same page. Use them as page backgrounds in a tablet note app, or print them.</p>
+    <p>Choose what you want below. Or take
+    <a href="https://github.com/fcardinaux/study-templates/releases/latest">every PDF in one archive</a>,
+    or read the <a href="https://github.com/fcardinaux/study-templates">source and the full description</a>.</p>
+  </header>
+
+  <div class="layout">
+    <form id="filters" aria-label="Filter the templates">
+      <fieldset>
+        <legend>Layout</legend>
+        <div id="kinds"></div>
+        <div class="quick"><button type="button" data-all="1">All</button> ·
+          <button type="button" data-all="0">None</button></div>
+      </fieldset>
+      <fieldset>
+        <legend>Side</legend>
+        <p class="hint">Where the board sits — or, on the Cornell pages, the cue column.</p>
+        <div class="row">
+          <label><input type="radio" name="side" value="left"> Left</label>
+          <label><input type="radio" name="side" value="right"> Right</label>
+          <label><input type="radio" name="side" value="both" checked> Both</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Board view</legend>
+        <label><input type="radio" name="view" value="white-view" checked> White view <span class="meta">a1 bottom-left</span></label>
+        <label><input type="radio" name="view" value="black-view"> Black view <span class="meta">h8 bottom-left</span></label>
+        <label><input type="radio" name="view" value="no-coords"> No coordinates</label>
+      </fieldset>
+      <fieldset>
+        <legend>Page size</legend>
+        <label><input type="radio" name="size" value="3x4" checked> 3:4 <span class="meta">tablet</span></label>
+        <label><input type="radio" name="size" value="a4"> A4</label>
+        <label><input type="radio" name="size" value="letter"> US Letter</label>
+      </fieldset>
+    </form>
+
+    <main>
+      <div class="summary">
+        <p id="count" aria-live="polite">Loading…</p>
+        <button type="button" class="zip" id="zip" disabled>Download as zip</button>
+      </div>
+      <ul class="cards" id="cards"></ul>
+    </main>
+  </div>
+
+  <footer>
+    <p>Everything is drawn as vector, so boards and grids stay sharp at any zoom. When
+    printing, set the scale to 100% so the squares stay square.</p>
+    <p>By François Cardinaux, under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> — share and
+    adapt them freely, with credit. The zip includes the licence and the README.
+    The Cornell pages follow the Cornell note-taking method; they are not affiliated
+    with, endorsed by, or connected to Cornell University.</p>
+  </footer>
+</div>
+
+<script type="module">
+// The page knows nothing about which files exist: build.sh writes catalog.json,
+// and the layouts describe themselves in src/layouts.js. Adding a layout or a
+// page size therefore needs no change here.
+import { LAYOUTS, TITLES, FACETS, VIEWS } from './src/layouts.js';
+
+const KINDS = {
+  'one-board': 'One board, notes below',
+  'three-stacked': 'Three boards, stacked',
+  'three-alternating': 'Three boards, alternating',
+  'cornell-dots': 'Cornell, dot grid',
+  'cornell-crosshairs': 'Cornell, crosshair grid',
+  'scoresheet': 'Scoresheet',
+  'all': 'Every layout, one file',
+};
+const VIEW_LABEL = { 'white-view': 'White view', 'black-view': 'Black view', 'no-coords': 'No coordinates' };
+const SIZE_LABEL = { '3x4': '3:4', a4: 'A4', letter: 'US Letter' };
+const ALL = 'chess-all-layouts';
+
+const form = document.getElementById('filters');
+const cards = document.getElementById('cards');
+const count = document.getElementById('count');
+const zip = document.getElementById('zip');
+
+// Filenames read chess-<layout>-<view>-<size>.pdf, and the view and size are
+// drawn from known sets, so the layout is whatever is left in front of them.
+function parse({ file, bytes }) {
+  const stem = file.replace(/^pdf\//, '').replace(/\.pdf$/, '');
+  const size = Object.keys(SIZE_LABEL).find((s) => stem.endsWith(`-${s}`));
+  const rest = stem.slice(0, -(size.length + 1));
+  const view = Object.keys(VIEWS).find((v) => rest.endsWith(`-${v}`));
+  const layout = rest.slice(0, -(view.length + 1));
+  const facet = layout === ALL ? { kind: 'all' } : FACETS[layout];
+  return { file, bytes, layout, view, size, ...facet };
+}
+
+const kb = (n) => n < 1e6 ? `${Math.round(n / 1024)} KB` : `${(n / 1048576).toFixed(1)} MB`;
+const capital = (s) => s[0].toUpperCase() + s.slice(1);
+
+let files = [];
+
+function readState() {
+  const kinds = [...form.querySelectorAll('input[name=kind]:checked')].map((i) => i.value);
+  const pick = (name) => form.querySelector(`input[name=${name}]:checked`).value;
+  return { kinds, side: pick('side'), view: pick('view'), size: pick('size') };
+}
+
+// The filters are kept in the address, so a selection can be bookmarked or sent.
+function writeUrl({ kinds, side, view, size }) {
+  const q = new URLSearchParams({ layout: kinds.join(','), side, view, size });
+  history.replaceState(null, '', `?${q}`);
+}
+
+function loadUrl() {
+  const q = new URLSearchParams(location.search);
+  if (q.has('layout')) {
+    const want = new Set(q.get('layout').split(',').filter(Boolean));
+    for (const i of form.querySelectorAll('input[name=kind]')) i.checked = want.has(i.value);
+  }
+  for (const name of ['side', 'view', 'size']) {
+    const input = form.querySelector(`input[name=${name}][value="${q.get(name)}"]`);
+    if (input) input.checked = true;
+  }
+}
+
+function select({ kinds, side, view, size }) {
+  const chosen = files.filter((f) =>
+    kinds.includes(f.kind) && f.size === size &&
+    (side === 'both' || !f.side || f.side === side));
+  // A layout that comes in one view only — the scoresheet — is shown whatever
+  // the view, rather than vanishing when its one view is not the one picked.
+  const byLayout = new Map();
+  for (const f of chosen) byLayout.set(f.layout, [...(byLayout.get(f.layout) ?? []), f]);
+  // Cards follow the order of LAYOUTS, which keeps each mirror image beside its
+  // original; the one-file set comes last.
+  const order = (f) => f.kind === 'all' ? Infinity : Object.keys(LAYOUTS).indexOf(f.layout);
+  return [...byLayout.values()].flatMap((group) => {
+    const match = group.filter((f) => f.view === view);
+    return match.length ? match : group.length === 1 ? group : [];
+  }).sort((a, b) => order(a) - order(b));
+}
+
+function card(f) {
+  const li = document.createElement('li');
+  li.className = 'card';
+  const all = f.kind === 'all';
+  const title = all ? `Every layout in one file` : capital(TITLES[f.layout]);
+  const preview = all ? Object.keys(LAYOUTS)[0] : f.layout;
+  const name = f.file.slice(4);
+  const pages = Object.keys(LAYOUTS).length;
+  li.innerHTML = `
+    <a class="thumb" href="${f.file}" download="${name}">
+      <img src="previews/${preview}.png" alt="" loading="lazy">
+      ${all ? `<span class="badge">${pages} pages</span>` : ''}
+    </a>
+    <div class="body">
+      <h3></h3>
+      <span class="meta">${VIEW_LABEL[f.view]} · ${SIZE_LABEL[f.size]} · ${kb(f.bytes)}</span>
+      <a class="get" href="${f.file}" download="${name}">Download PDF</a>
+    </div>`;
+  li.querySelector('h3').textContent = title;
+  li.querySelector('.thumb').setAttribute('aria-label', `Download ${title}`);
+  return li;
+}
+
+let shown = [];
+function render() {
+  const state = readState();
+  writeUrl(state);
+  shown = select(state);
+  cards.replaceChildren(...shown.map(card));
+  const total = shown.reduce((n, f) => n + f.bytes, 0);
+  count.textContent = shown.length
+    ? `${shown.length} file${shown.length === 1 ? '' : 's'}, ${kb(total)}`
+    : 'Nothing matches — pick at least one layout.';
+  zip.disabled = shown.length < 2;
+}
+
+// The zip is built in the browser from files on this same site, so there is no
+// server involved. It carries the README and the licence, as the release does,
+// because CC BY asks for attribution and the files should travel with it.
+async function downloadZip() {
+  zip.disabled = true;
+  const label = zip.textContent;
+  zip.textContent = 'Preparing…';
+  try {
+    if (!window.JSZip) {
+      await new Promise((ok, fail) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        s.onload = ok; s.onerror = fail;
+        document.head.appendChild(s);
+      });
+    }
+    const archive = new JSZip();
+    const fetchInto = async (path) => {
+      const r = await fetch(path);
+      if (!r.ok) throw new Error(`${path}: ${r.status}`);
+      archive.file(path, await r.blob());
+    };
+    await Promise.all([...shown.map((f) => fetchInto(f.file)), fetchInto('README.md'), fetchInto('LICENSE')]);
+    const blob = await archive.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'chess-study-templates.zip';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  } catch (e) {
+    console.error(e);
+    count.textContent = 'The zip could not be made. The files can still be downloaded one by one.';
+  } finally {
+    zip.textContent = label;
+    zip.disabled = shown.length < 2;
+  }
+}
+
+const kinds = document.getElementById('kinds');
+for (const [value, text] of Object.entries(KINDS)) {
+  const label = document.createElement('label');
+  label.innerHTML = `<input type="checkbox" name="kind" value="${value}" checked> `;
+  label.append(text);
+  kinds.appendChild(label);
+}
+form.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-all]');
+  if (!b) return;
+  for (const i of form.querySelectorAll('input[name=kind]')) i.checked = b.dataset.all === '1';
+  render();
+});
+form.addEventListener('change', render);
+zip.addEventListener('click', downloadZip);
+
+try {
+  const r = await fetch('catalog.json');
+  files = (await r.json()).map(parse);
+  loadUrl();
+  render();
+} catch (e) {
+  console.error(e);
+  count.textContent = 'The list of files could not be loaded.';
+}
+</script>
+</body>
+</html>

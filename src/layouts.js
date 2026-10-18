@@ -348,6 +348,23 @@ export const TITLES = {
   'chess-scoresheet': 'scoresheet',
 };
 
+// How the download page groups the layouts: the kind of page, and the side the
+// board sits on — or, for the Cornell pages, the cue column. A layout and its
+// mirror image share a kind and differ only in side.
+export const FACETS = {
+  'chess-1-board-top-left': { kind: 'one-board', side: 'left' },
+  'chess-1-board-top-right': { kind: 'one-board', side: 'right' },
+  'chess-3-boards-left': { kind: 'three-stacked', side: 'left' },
+  'chess-3-boards-right': { kind: 'three-stacked', side: 'right' },
+  'chess-3-boards-alternate': { kind: 'three-alternating', side: 'left' },
+  'chess-3-boards-alternate-right-first': { kind: 'three-alternating', side: 'right' },
+  'chess-cornell-dots': { kind: 'cornell-dots', side: 'left' },
+  'chess-cornell-dots-cue-right': { kind: 'cornell-dots', side: 'right' },
+  'chess-cornell-crosshairs': { kind: 'cornell-crosshairs', side: 'left' },
+  'chess-cornell-crosshairs-cue-right': { kind: 'cornell-crosshairs', side: 'right' },
+  'chess-scoresheet': { kind: 'scoresheet' },
+};
+
 // How the board is labelled. The squares are identical in all three.
 export const VIEWS = {
   'white-view': { coordinates: true,  flipped: false },  // a1 bottom-left

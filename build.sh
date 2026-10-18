@@ -112,6 +112,17 @@ for path in paths:
             f.write(out)
 NORM
 
+# The download page lists files from this rather than knowing them itself, so a
+# new layout or page size shows up there without touching the page. Sizes are
+# stable because the PDFs are.
+echo "Writing catalog"
+python3 - pdf/*.pdf > catalog.json <<'CAT'
+import json, os, sys
+files = [{"file": p, "bytes": os.path.getsize(p)} for p in sorted(sys.argv[1:])]
+json.dump(files, sys.stdout, indent=1)
+print()
+CAT
+
 # Previews illustrate the layouts in the README, so they use the coordinate-free
 # view: at 300px wide the labels are about 3px tall and read as speckle, not text.
 echo "Refreshing previews"
